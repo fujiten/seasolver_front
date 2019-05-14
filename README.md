@@ -1,6 +1,6 @@
-# front_seasolver
+# seasolver_front
 
-> A Vue.js front-end app for a Ruby on Rails API backend app
+> A Vue.js front-end app for a Ruby on Rails API backend app.
 
 ## Build Setup
 

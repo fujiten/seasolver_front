@@ -7,7 +7,12 @@
 
         <div class="mb-6">
           <label for="email" class="label">E-mail Address</label>
-          <input type="email" v-model="email" class="input" id="email" placeholder="andy@web-crunch.com">
+          <input type="email" v-model="email" class="input" id="email" placeholder="seasolver@example.com">
+        </div>
+
+        <div class="mb-6">
+          <label for="name" class="label">ニックネーム</label>
+          <input type="text" v-model="email" class="input" id="name" placeholder="ウミガメさん">
         </div>
 
        <div class="mb-6">
@@ -37,6 +42,7 @@ export default {
   data () {
     return {
       email: '',
+      name: '',
       password: '',
       password_confirmation: '',
       error: ''

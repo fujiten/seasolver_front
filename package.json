@@ -1,7 +1,7 @@
 {
-  "name": "front_seasolver",
+  "name": "seasolver_front",
   "version": "1.0.0",
-  "description": "A Vue.js front-end app for a Ruby on Rails API backend app",
+  "description": "A Vue.js front-end app for a Ruby on Rails API backend app.",
   "author": "hikaru <hikaru.fujita.0903@gmail>",
   "private": true,
   "scripts": {
@@ -13,8 +13,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "tailwindcss": "^0.7.4",
+    "axios": "^0.18.0",
     "vue": "^2.5.2",
+    "vue-axios": "^2.1.4",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
@@ -71,6 +72,7 @@
     "shelljs": "^0.7.6",
     "sinon": "^4.0.0",
     "sinon-chai": "^2.8.0",
+    "tailwindcss": "0.7.4",
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^0.5.8",
     "vue-loader": "^13.3.0",
@@ -78,7 +80,7 @@
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
-    "webpack-dev-server": ">=3.1.11",
+    "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
   },
   "engines": {
