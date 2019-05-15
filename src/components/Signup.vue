@@ -12,7 +12,7 @@
 
         <div class="mb-6">
           <label for="name" class="label">ニックネーム</label>
-          <input type="text" v-model="email" class="input" id="name" placeholder="ウミガメさん">
+          <input type="text" v-model="name" class="input" id="name" placeholder="ウミガメさん">
         </div>
 
        <div class="mb-6">
@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     signup () {
-      this.$http.plain.post('/signup', {email: this.email, password: this.password, password_confirmation: this.password_confirmation})
+      this.$http.plain.post('/signup', {email: this.email, name: this.name, password: this.password, password_confirmation: this.password_confirmation})
         .then(response => this.signupSuccesful(response))
         .catch(error => this.signupFailed(error))
     },
