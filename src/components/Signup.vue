@@ -31,6 +31,10 @@
         <div class="my-4">
           <router-link to="/" class="link-grey">Sign In</router-link>
         </div>
+
+        <div class="my-4">
+          <router-link to="/users" class="link-grey">Check users</router-link>
+        </div>
       </form>
     </div>
   </div>
