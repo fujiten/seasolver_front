@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Signin from '@/components/Signin.vue'
 import Signup from '@/components/Signup.vue'
 import User from '@/components/User.vue'
+import NotFound from '@/components/NotFound.vue'
 
 Vue.use(Router)
 
@@ -23,6 +24,9 @@ export default new Router({
       path: '/users',
       name: 'User',
       component: User
-    }
+    },
+    { path: '*',
+      name: 'NotFound',
+      component: NotFound }
   ]
 })
