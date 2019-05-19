@@ -56,6 +56,7 @@ export default {
       localStorage.csrf = response.data.csrf
       localStorage.signedIn = true
       this.error = ''
+      this.$store.dispatch('switchLogin')
       this.$router.replace('/records')
     },
     signinFailed (error) {
