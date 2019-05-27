@@ -6,22 +6,22 @@
         <div class="text-red" v-if="error">{{ error }}</div>
 
         <div class="mb-6">
-          <label for="email" class="label">E-mail Address</label>
+          <label for="email" class="label">メールアドレス</label>
           <input type="email" v-model="email" class="input" id="email" placeholder="seasolver@example.com">
         </div>
 
         <div class="mb-6">
-          <label for="name" class="label">ニックネーム</label>
+          <label for="name" class="label">ニックネーム（登録後に変更できます）</label>
           <input type="text" v-model="name" class="input" id="name" placeholder="ウミガメさん">
         </div>
 
        <div class="mb-6">
-          <label for="password" class="label">Password</label>
+          <label for="password" class="label">パスワード</label>
           <input type="password" v-model="password" class="input" id="password">
         </div>
 
         <div class="mb-6">
-          <label for="password" class="label">Password_confirmation</label>
+          <label for="password" class="label">確認用パスワード</label>
           <input type="password" v-model="password_confirmation" class="input" id="password_confirmation">
         </div>
 
