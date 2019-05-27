@@ -44,8 +44,8 @@
       </div>
 
       <div>
-        <router-link to="/quizzes" class="link-grey px-2 no-underline" v-if="!sigendIn">問題を解く</router-link>
-        <router-link to="/" class="link-grey px-2 no-underline" v-if="!sigendIn">ログイン</router-link>
+        <router-link to="/" class="link-grey px-2 no-underline" v-if="!sigendIn">問題一覧</router-link>
+        <router-link to="/signin" class="link-grey px-2 no-underline" v-if="!sigendIn">ログイン</router-link>
         <router-link to="/signup" class="link-grey px-2 no-underline" v-if="!sigendIn">新規登録</router-link>
         <router-link to="/artists" class="link-grey px-2 no-underline" v-if="sigendIn">Artists</router-link>
         <a href="#" @click.prevent="signOut" class="link-grey px-2 no-underline" v-if="sigendIn">Sign out</a>
