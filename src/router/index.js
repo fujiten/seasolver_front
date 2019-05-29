@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Signin from '@/components/Signin.vue'
 import Signup from '@/components/Signup.vue'
-import User from '@/components/User.vue'
+import Users from '@/components/users/Users.vue'
+import User from '@/components/users/User.vue'
 import Quizzes from '@/components/quizzes/Quizzes.vue'
 import Quiz from '@/components/quizzes/Quiz.vue'
 import NotFound from '@/components/NotFound.vue'
@@ -24,6 +25,11 @@ export default new Router({
     },
     {
       path: '/users',
+      name: 'Users',
+      component: Users
+    },
+    {
+      path: '/users/:id',
       name: 'User',
       component: User
     },
@@ -33,12 +39,13 @@ export default new Router({
       component: Quizzes
     },
     {
-      path: '/1',
+      path: '/:id',
       name: 'Quiz',
       component: Quiz
     },
     { path: '*',
       name: 'NotFound',
-      component: NotFound }
+      component: NotFound
+    }
   ]
 })
