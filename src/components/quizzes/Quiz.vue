@@ -46,7 +46,7 @@ export default {
         .catch(error => this.setError(error, 'ユーザー検索時エラー：　なにかがおかしいです。'))
     },
     jumpToUser (userId) {
-      this.$router.push(`users/${userId}`)
+      this.$router.push(`/users/${userId}`)
     }
   }
 }

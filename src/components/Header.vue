@@ -74,9 +74,6 @@ export default {
     setError (error, text) {
       this.error = (error.response && error.response.data && error.response.data.error) || text
     },
-    signedIn () {
-      return localStorage.signedIn
-    },
     signOut () {
       this.$http.secured.delete('/signin')
         .then(response => {

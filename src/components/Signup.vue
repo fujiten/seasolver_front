@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-sm m-auto my-8">
     <div class="border p-10 border-grey-light shadow rounded">
-      <h3 class="text-2xl mb-6 text-grey-darkest">Sign Up</h3>
+      <h3 class="text-2xl mb-6 text-grey-darkest">新規登録</h3>
       <form @submit.prevent="signup">
         <div class="text-red" v-if="error">{{ error }}</div>
 
@@ -26,10 +26,10 @@
         </div>
 
         <button type="submit" class="font-sans font-bold px-4 rounded cursor-pointer
-        no-underline bg-green hover:bg-green-dark block w-full py-4 text-white items-center justify-center">Sign Up</button>
+        no-underline bg-green hover:bg-green-dark block w-full py-4 text-white items-center justify-center">新規登録</button>
 
         <div class="my-4">
-          <router-link to="/" class="link-grey">Sign In</router-link>
+          <router-link to="/signin" class="link-grey">ログイン</router-link>
         </div>
 
         <div class="my-4">

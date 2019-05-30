@@ -9,6 +9,6 @@ html {
   background: #12283A;
 }
 
-p {
+p, label {
   color: #e6e8ff;
 }

@@ -74,7 +74,7 @@ export default {
       this.error = (error.response && error.response.data && error.response.data.error) || text
     },
     toSolve (id) {
-      this.$router.push(`/${id}`)
+      this.$router.push(`quizzes/${id}`)
     }
   }
 }
