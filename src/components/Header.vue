@@ -40,7 +40,7 @@
       </svg>
 
       <div class="flex-1 flex items-center">
-        <a href="/" class="text-lg font-mono pl-4 font-bold no-underline text-indigo-lighter hover:text-indigo-darker">Sea Solver - ウミガメのスープを解くサイト -</a>
+        <router-link to="/" class="text-lg font-mono pl-4 font-bold no-underline text-indigo-lighter hover:text-indigo-darker">Sea Solver - ウミガメのスープを解くサイト -</router-link>
       </div>
 
       <div>
