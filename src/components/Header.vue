@@ -58,11 +58,6 @@
 <script>
 export default {
   name: 'Header',
-  data () {
-    return {
-      localStorage: localStorage.signedIn
-    }
-  },
   computed: {
     sigendIn: function () {
       return this.$store.state.localStorage
@@ -79,7 +74,6 @@ export default {
         .then(response => {
           delete localStorage.csrf
           delete localStorage.signedIn
-          this.localStorage = ''
           this.$store.dispatch('switchLogin')
           this.$router.replace('/')
         })
@@ -87,7 +81,6 @@ export default {
           this.setError(error, '認証切れの可能性があります。トークンを削除してログアウトします。')
           delete localStorage.csrf
           delete localStorage.signedIn
-          this.localStorage = ''
           this.$store.dispatch('switchLogin')
           this.$router.replace('/')
         })
