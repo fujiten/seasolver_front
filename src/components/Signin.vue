@@ -53,10 +53,16 @@ export default {
         this.signinFailed(response)
         return
       }
-      localStorage.csrf = response.data.csrf
-      localStorage.signedIn = true
       this.error = ''
+      localStorage.signedIn = true
       this.$store.dispatch('switchLogin')
+
+      localStorage.csrf = response.data.csrf
+
+      const uid = response.data.uid
+      localStorage.uid = response.data.uid
+      this.$store.dispatch('setUserId', uid)
+
       this.$router.replace('/')
     },
     signinFailed (error) {

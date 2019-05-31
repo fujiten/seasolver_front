@@ -69,16 +69,23 @@ export default {
         this.signinFailed(response)
         return
       }
-      localStorage.csrf = response.data.csrf
-      localStorage.signedIn = true
-      console.log(localStorage.csrf)
       this.error = ''
+      localStorage.signedIn = true
+      this.$store.dispatch('switchLogin')
+
+      localStorage.csrf = response.data.csrf
+
+      const uid = response.data.uid
+      localStorage.uid = response.data.uid
+      this.$store.dispatch('setUserId', uid)
+
       this.$router.replace('/')
     },
     signupFailed (error) {
       this.error = (error.response && error.response.data && error.response.data.error) || 'Something went wrong'
       delete localStorage.csrf
       delete localStorage.signedIn
+      delete localStorage.uid
     },
     checkSignedIn () {
       if (localStorage.signedIn) {
