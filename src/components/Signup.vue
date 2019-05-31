@@ -73,7 +73,7 @@ export default {
       localStorage.signedIn = true
       console.log(localStorage.csrf)
       this.error = ''
-      this.$router.replace('/records')
+      this.$router.replace('/')
     },
     signupFailed (error) {
       this.error = (error.response && error.response.data && error.response.data.error) || 'Something went wrong'
@@ -82,7 +82,7 @@ export default {
     },
     checkSignedIn () {
       if (localStorage.signedIn) {
-        this.$router.replace('/records')
+        this.$router.replace('/')
       }
     }
   }

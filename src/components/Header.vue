@@ -47,8 +47,8 @@
         <router-link to="/" class="link-grey px-2 no-underline" v-if="!sigendIn">問題一覧</router-link>
         <router-link to="/signin" class="link-grey px-2 no-underline" v-if="!sigendIn">ログイン</router-link>
         <router-link to="/signup" class="link-grey px-2 no-underline" v-if="!sigendIn">新規登録</router-link>
-        <router-link to="/artists" class="link-grey px-2 no-underline" v-if="sigendIn">Artists</router-link>
-        <a href="#" @click.prevent="signOut" class="link-grey px-2 no-underline" v-if="sigendIn">Sign out</a>
+        <router-link to="/mypage" class="link-grey px-2 no-underline" v-if="sigendIn">マイページ</router-link>
+        <a href="#" @click.prevent="signOut" class="link-grey px-2 no-underline" v-if="sigendIn">ログアウト</a>
       </div>
     </div>
     <hr class="border border-grey-light my-6" />
@@ -83,7 +83,14 @@ export default {
           this.$store.dispatch('switchLogin')
           this.$router.replace('/')
         })
-        .catch(error => this.setError(error, 'Cannot sign out'))
+        .catch(error => {
+          this.setError(error, '認証切れの可能性があります。トークンを削除してログアウトします。')
+          delete localStorage.csrf
+          delete localStorage.signedIn
+          this.localStorage = ''
+          this.$store.dispatch('switchLogin')
+          this.$router.replace('/')
+        })
     }
   }
 }

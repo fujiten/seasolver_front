@@ -10,7 +10,8 @@ export default {
   data () {
     return {
       text: 'This page is not found!',
-      localStorage: localStorage.signedIn
+      localStorage: localStorage.signedIn,
+      store: this.$store.state
     }
   }
 }

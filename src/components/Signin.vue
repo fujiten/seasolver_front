@@ -57,7 +57,7 @@ export default {
       localStorage.signedIn = true
       this.error = ''
       this.$store.dispatch('switchLogin')
-      this.$router.replace('/records')
+      this.$router.replace('/')
     },
     signinFailed (error) {
       this.error = (error.response && error.response.data && error.response.data.error) || ''
@@ -66,7 +66,7 @@ export default {
     },
     checkSignedIn () {
       if (localStorage.signedIn) {
-        this.$router.replace('/records')
+        this.$router.replace('/')
       }
     }
   }

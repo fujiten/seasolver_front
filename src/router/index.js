@@ -4,6 +4,7 @@ import Signin from '@/components/Signin.vue'
 import Signup from '@/components/Signup.vue'
 import Users from '@/components/users/Users.vue'
 import User from '@/components/users/User.vue'
+import Mypage from '@/components/users/Mypage.vue'
 import Quizzes from '@/components/quizzes/Quizzes.vue'
 import Quiz from '@/components/quizzes/Quiz.vue'
 import NotFound from '@/components/NotFound.vue'
@@ -32,6 +33,11 @@ export default new Router({
       path: '/users/:id',
       name: 'User',
       component: User
+    },
+    {
+      path: '/mypage',
+      name: 'Mypage',
+      component: Mypage
     },
     {
       path: '/',
