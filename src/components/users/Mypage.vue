@@ -36,7 +36,6 @@ export default {
       this.$http.secured.get(`/api/v1/users/${uid}`)
         .then(response => {
           this.user = response.data
-          console.log(this.user)
         })
         .catch(error => this.setError(error, 'ユーザー検索時エラー：　なにかがおかしいです。'))
     },
