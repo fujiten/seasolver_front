@@ -9,9 +9,13 @@
 
     <div>
       <p>
-      現在の質問数：０
-      質問一覧：
+      現在の質問数：{{ quiz_status.query_times}} , 現在のポイント： {{ quiz_status.total_points }}
       </p>
+      <ul class="list-reset mt-4">
+          <li class="py-4" v-for="(query, index) in queries" :key="query.id">
+            <p>{{ index + 1 }} : {{ query.body }}</p>
+          </li>
+      </ul>
     </div>
   </div>
 
@@ -23,6 +27,8 @@ export default {
   data () {
     return {
       quiz: {},
+      queries: [],
+      quiz_status: {},
       user: {},
       error: ''
     }
@@ -31,7 +37,9 @@ export default {
     const id = this.$route.params.id
     this.$http.secured.get(`/api/v1/quizzes/${id}`)
       .then(response => {
-        this.quiz = response.data
+        this.quiz = response.data[0]
+        this.queries = response.data[1]
+        this.quiz_status = response.data[2]
         this.getUser(this.quiz.user_id)
       })
       .catch(error => this.setError(error, '問題検索時エラー：　なにかがおかしいです。'))
