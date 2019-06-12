@@ -48,6 +48,7 @@
         <router-link to="/signin" class="link-grey px-2 no-underline" v-if="!sigendIn">ログイン</router-link>
         <router-link to="/signup" class="link-grey px-2 no-underline" v-if="!sigendIn">新規登録</router-link>
         <router-link to="/mypage" class="link-grey px-2 no-underline" v-if="sigendIn">マイページ</router-link>
+        <router-link to="/quizzes/new" class="link-grey px-2 no-underline" v-if="sigendIn">問題作成</router-link>
         <a href="#" @click.prevent="signOut" class="link-grey px-2 no-underline" v-if="sigendIn">ログアウト</a>
       </div>
     </div>

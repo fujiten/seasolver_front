@@ -48,7 +48,7 @@
               {{ quiz.title }}   難しさ： {{ quiz.difficulity }}
             </p>
           </div>
-          <a href="#" @click.prevent="toSolve(quiz.id)" class="bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">解いてみる</a>
+          <a href="#" @click.prevent="toDetail(quiz.id)" class="bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">詳細</a>
         </div>
       </li>
     </ul>
@@ -73,7 +73,7 @@ export default {
     setError (error, text) {
       this.error = (error.response && error.response.data && error.response.data.error) || text
     },
-    toSolve (id) {
+    toDetail (id) {
       this.$router.push(`quizzes/${id}`)
     }
   }

@@ -7,6 +7,7 @@ import User from '@/components/users/User.vue'
 import Mypage from '@/components/users/Mypage.vue'
 import Quizzes from '@/components/quizzes/Quizzes.vue'
 import Quiz from '@/components/quizzes/Quiz.vue'
+import CreateQuiz from '@/components/quizzes/CreateQuiz'
 import NotFound from '@/components/NotFound.vue'
 
 Vue.use(Router)
@@ -43,6 +44,11 @@ export default new Router({
       path: '/',
       name: 'Quizzes',
       component: Quizzes
+    },
+    {
+      path: '/quizzes/new',
+      name: 'CreateQuiz',
+      component: CreateQuiz
     },
     {
       path: '/quizzes/:id',
