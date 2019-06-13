@@ -4,7 +4,7 @@
     <div>
       <p>タイトル：「{{ quiz.title }}」</p>
       <p>{{ quiz.question }}</p>
-      <a href="#" @click.prevent="toSolve(quiz.id)" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">挑戦する</a>
+      <a href="#" @click.prevent="solveQuiz(quiz.id)" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">挑戦する</a>
       <a href="#" @click.prevent="jumpToAuthor(quiz.user_id)" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">作者：{{ author.name }} </a>
     </div>
 
@@ -39,8 +39,8 @@ export default {
     const quizId = this.$route.params.id
     this.$http.secured.get(`/api/v1/quizzes/${quizId}`)
       .then(response => {
-        this.quiz = response.data[0]
-        this.author = response.data[1]
+        this.quiz = response.data.quiz
+        this.author = response.data.author
       })
       .catch(error => this.setError(error, '問題検索時エラー： なにかがおかしいです。'))
   },
@@ -48,11 +48,11 @@ export default {
     setError (error, text) {
       this.error = (error.response && error.response.data && error.response.data.error) || text
     },
-    toSolve (quizId) {
+    solveQuiz (quizId) {
       this.$http.secured.post(`/api/v1/quizzes/${quizId}/solve`)
         .then(response => {
-          this.queries = response.data[0]
-          this.quiz_status = response.data[1]
+          this.queries = response.data.queries
+          this.quiz_status = response.data.quiz_status
           this.trying = true
         })
         .catch(error => this.setError(error, 'エラー： 問題に挑戦できません。'))
