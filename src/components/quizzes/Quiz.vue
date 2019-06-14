@@ -1,12 +1,9 @@
 <template>
   <div>
     <div class="text-red" v-if="error">{{ error }}</div>
-    <div>
-      <p>タイトル：「{{ quiz.title }}」</p>
-      <p>{{ quiz.question }}</p>
-      <a href="#" @click.prevent="solveQuiz(quiz.id)" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">挑戦する</a>
-      <a href="#" @click.prevent="jumpToAuthor(quiz.user_id)" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">作者：{{ author.name }} </a>
-    </div>
+
+    <my-quiz v-if="isMine" />
+    <others-quiz v-if="isOthers" />
 
     <div v-if="trying">
       <p>
@@ -23,6 +20,8 @@
 </template>
 
 <script>
+import MyQuiz from './MyQuiz.vue'
+import OthersQuiz from './OthersQuiz.vue'
 export default {
   name: 'Quiz',
   data () {
@@ -32,8 +31,14 @@ export default {
       quiz_status: {},
       author: {},
       error: '',
-      trying: false
+      trying: false,
+      isMine: false,
+      isOthers: false
     }
+  },
+  components: {
+    MyQuiz,
+    OthersQuiz
   },
   created () {
     const quizId = this.$route.params.id
@@ -41,8 +46,16 @@ export default {
       .then(response => {
         this.quiz = response.data.quiz
         this.author = response.data.author
+        this.isMine = response.data.isMine
+        this.isOthers = response.data.isOthers
+        this.$store.dispatch('setQuiz', this.quiz)
+        this.$store.dispatch('setAuthor', this.author)
       })
       .catch(error => this.setError(error, '問題検索時エラー： なにかがおかしいです。'))
+  },
+  beforeDestroy () {
+    this.$store.dispatch('setQuiz', '')
+    this.$store.dispatch('setAuthor', '')
   },
   methods: {
     setError (error, text) {
