@@ -3,6 +3,7 @@
     <div class="border p-10 border-grey-light shadow rounded">
       <h3 class="text-2xl mb-6 text-grey-darkest">ログイン</h3>
       <form @submit.prevent="signin">
+        <div class="text-red">{{ $route.params.error }}</div>
         <div class="text-red" v-if="error">{{ error }}</div>
 
         <div class="mb-6">

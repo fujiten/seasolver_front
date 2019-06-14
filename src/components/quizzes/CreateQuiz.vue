@@ -8,7 +8,7 @@
         <label for="quiz_title" class="label">タイトル</label>
         <input
           id="quiz_title"
-          class="input"
+          class="input w-full"
           autofocus autocomplete="off"
           placeholder="タイトル 例：「ウミガメのスープ」"
           v-model="newQuiz.title" />
@@ -31,7 +31,7 @@
           id="quiz_answer"
           class="w-full shadow-inner p-4 border-0"
           autofocus autocomplete="off"
-          placeholder="ウミガメのスープを食べた男は、そのあとすぐに海に飛び込んでしまった。どうしてだろう。"
+          placeholder="あまりにもウミガメのスープがおいしくて、居ても経ってもいられなくなったから。"
           v-model="newQuiz.answer"
         />
       </div>
