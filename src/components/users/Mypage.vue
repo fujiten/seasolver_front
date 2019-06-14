@@ -42,40 +42,24 @@ export default {
   created () {
     this.checkSignedIn()
     this.fetchMyUserInfo()
-    this.fetchMyQuizzes()
   },
   updated () {
     this.checkSignedIn()
   },
   methods: {
-    refreshToken () {
-      this.$http.secured.post(`/refresh`)
-        .then(response => { this.$router.replace('/mypage') })
-        .catch(error => { this.setError(error, 'トークンのリフレッシュに失敗しました。一度ログアウトしてから再度ログインしてください。') })
-    },
     setError (error, text) {
       this.error = (error.response && error.response.data && error.response.data.error) || text
     },
     fetchMyUserInfo () {
       this.$http.secured.get(`/api/v1/users/show_mypage`)
         .then(response => {
-          this.user = response.data
+          this.user = response.data.current_user
+          this.draftedQuizzes = response.data.my_quizzes.drafted
+          this.publishedQuizzes = response.data.my_quizzes.published
         })
         .catch(error => {
-          if (error.response.status === 401) {
-            this.refreshToken()
-          } else {
-            this.setError(error, 'ユーザー検索時エラー：　なにかがおかしいです。')
-          }
+          this.setError(error, 'ユーザー情報検索時エラー：　なにかがおかしいです。')
         })
-    },
-    fetchMyQuizzes () {
-      this.$http.secured.get(`/api/v1/quizzes/show_my_quizzes`)
-        .then(response => {
-          this.draftedQuizzes = response.data.drafted
-          this.publishedQuizzes = response.data.published
-        })
-        .catch(error => this.setError(error, '問題検索時エラー：　なにかがおかしいです。'))
     },
     jumpToQuiz (quizId) {
       this.$router.push(`quizzes/${quizId}`)
