@@ -16,7 +16,7 @@
         </p>
       </li>
     </ul>
-    <button @click.prevent="toggle()" class="block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">追加画面</button>
+    <button @click.prevent="toggle()" class="block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">質問追加画面</button>
     <transition name="fade">
       <div v-show="open">
         <form @submit.prevent="addQuery(quiz.id)">
