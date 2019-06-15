@@ -2,7 +2,7 @@
   <div>
     <div class="text-indigo-light">
       <div class="text-red" v-if="error">{{ error }}</div>
-      <h1 class="mb-5">MyQuiz</h1>
+      <h1 class="mb-5">MyQuiz ({{ quiz.published }})</h1>
       <p>タイトル：「{{ quiz.title }}」</p>
       <p>本文：「{{ quiz.question }}」</p>
     </div>
@@ -92,6 +92,11 @@
     <div>
       {{ message }}
     </div>
+
+    <div>
+      <button v-if="moreMinimumQuery" @click.prevent="publishQuestion()" class="block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">問題を公開する</button>
+      <button v-if="moreMinimumQuery" @click.prevent="draftQuestion()" class="block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">問題を下書きにする</button>
+    </div>
   </div>
 </template>
 
@@ -104,15 +109,18 @@ export default {
       queries: [],
       open: false,
       error: '',
-      message: ''
+      message: '',
+      quiz: this.$store.getters.quiz,
+      author: this.$store.getters.author
     }
   },
   computed: {
-    quiz: function () {
-      return this.$store.getters.quiz
-    },
-    author: function () {
-      return this.$store.getters.author
+    moreMinimumQuery: function () {
+      if (this.queries.length > 9) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   created () {
@@ -121,6 +129,7 @@ export default {
   methods: {
     toggle () {
       this.open = !this.open
+      this.message = ''
     },
     setError (error, text) {
       this.error = (error.response && error.response.data && error.response.data.error) || text
@@ -151,6 +160,28 @@ export default {
         })
         .catch(error => {
           this.setError(error, '質問検索時エラー：　なにかがおかしいです。')
+        })
+    },
+    publishQuestion () {
+      this.$http.secured.patch(`/api/v1/quizzes/${this.$route.params.id}`, { quiz: { published: 'published' } })
+        .then(response => {
+          this.quiz = response.data
+          this.message = '問題を公開しました'
+          this.error = ''
+        })
+        .catch(error => {
+          this.setError(error, '問題公開時エラー：　なにかがおかしいです。')
+        })
+    },
+    draftQuestion () {
+      this.$http.secured.patch(`/api/v1/quizzes/${this.$route.params.id}`, { quiz: { published: 'drafted' } })
+        .then(response => {
+          this.quiz = response.data
+          this.message = '問題を下書きに変更しました'
+          this.error = ''
+        })
+        .catch(error => {
+          this.setError(error, '下書き変更時エラー：　なにかがおかしいです。')
         })
     }
   }
