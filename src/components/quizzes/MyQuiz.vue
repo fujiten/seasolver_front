@@ -1,12 +1,14 @@
 <template>
   <div>
     <div class="text-indigo-light">
+      <div>{{ message }}</div>
       <div class="text-red" v-if="error">{{ error }}</div>
       <h1 class="mb-5">MyQuiz ({{ quiz.published }})</h1>
       <p>タイトル：「{{ quiz.title }}」</p>
       <p>本文：「{{ quiz.question }}」</p>
     </div>
     <ul>
+      <p>質問一覧</p>
       <li v-for="query in queries" :key="query.id">
         <p>
         カテゴリ:{{ query.category }}
@@ -16,9 +18,17 @@
         </p>
       </li>
     </ul>
-    <button @click.prevent="toggle()" class="block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">質問追加画面</button>
+    <ul class="mt-4">
+      <p>選択肢一覧</p>
+      <li v-for="choice in choices" :key="choice.id">
+        <p>
+        選択肢の本文:{{ choice.body }}, {{ choice.correctness }}
+        </p>
+      </li>
+    </ul>
+    <button @click.prevent="toggleQuery()" class="block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">質問追加画面</button>
     <transition name="fade">
-      <div v-show="open">
+      <div v-show="queryOpen">
         <form @submit.prevent="addQuery(quiz.id)">
           <div class="m-6">
             <label for="query_category" class="label">カテゴリ</label>
@@ -89,9 +99,47 @@
         </form>
       </div>
     </transition>
-    <div>
-      {{ message }}
-    </div>
+
+    <button @click.prevent="toggleChoice()" class="block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">回答の選択肢追加画面</button>
+    <transition name="fade">
+      <div v-show="choiceOpen">
+        <form @submit.prevent="addChoice(quiz.id)">
+
+          <div class="m-6">
+            <label for="choice_body" class="label">選択肢</label>
+            <textarea
+              id="choice_body"
+              class="w-full shadow-inner p-4 border-0"
+              autofocus autocomplete="off"
+              placeholder="ウミガメのスープが美味しすぎて、海に飛び込んでしまったのです。"
+              v-model="newChoice.body"
+            />
+          </div>
+
+          <div class="m-6">
+            <input
+              type="radio"
+              id="choice_correctness_true"
+              value=true
+              v-model="newChoice.correctness"
+            />
+            <label for="choice_correctness_true" class="label">正解</label>
+
+            <input
+              type="radio"
+              id="choice_correctness_false"
+              value=false
+              v-model="newChoice.correctness"
+            />
+            <label for="choice_correctness_true" class="label">不正解</label>
+
+            <p>{{ newChoice.correctness }}</p>
+          </div>
+
+        <input type="submit" value="選択肢作成" class="width-font-sans font-bold px-4 rounded cursor-pointer no-underline bg-green hover:bg-green-dark block py-4 text-white items-center justify-center" />
+        </form>
+      </div>
+    </transition>
 
     <div>
       <button v-if="moreMinimumQuery" @click.prevent="publishQuestion()" class="block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">問題を公開する</button>
@@ -106,8 +154,11 @@ export default {
   data () {
     return {
       newQuery: {},
+      newChoice: {},
       queries: [],
-      open: false,
+      choices: [],
+      queryOpen: false,
+      choiceOpen: false,
       error: '',
       message: '',
       quiz: this.$store.getters.quiz,
@@ -125,11 +176,14 @@ export default {
   },
   created () {
     this.fetchQueries(this.quiz.id)
+    this.fetchChoices(this.quiz.id)
   },
   methods: {
-    toggle () {
-      this.open = !this.open
-      this.message = ''
+    toggleQuery () {
+      this.queryOpen = !this.queryOpen
+    },
+    toggleChoice () {
+      this.choiceOpen = !this.choiceOpen
     },
     setError (error, text) {
       this.error = (error.response && error.response.data && error.response.data.error) || text
@@ -149,9 +203,26 @@ export default {
           this.queries.push(response.data)
           this.newQuery = {}
           this.message = '質問を作成しました！'
-          this.toggle()
+          this.toggleQuery()
         })
         .catch(error => this.setError(error, '質問の作成に失敗しました。'))
+    },
+    addChoice (quizId) {
+      const value = this.newChoice
+      if (!value) {
+        return
+      }
+      this.$http.secured.post(`/api/v1/quizzes/${quizId}/choices`,
+        { choice: {
+          body: this.newChoice.body,
+          correctness: this.newChoice.correctness } })
+        .then(response => {
+          this.choices.push(response.data)
+          this.newChoice = {}
+          this.message = '選択肢を作成しました！'
+          this.toggleChoice()
+        })
+        .catch(error => this.setError(error, '選択肢の作成に失敗しました。'))
     },
     fetchQueries (quizId) {
       this.$http.secured.get(`/api/v1/quizzes/${quizId}/queries`)
@@ -160,6 +231,15 @@ export default {
         })
         .catch(error => {
           this.setError(error, '質問検索時エラー：　なにかがおかしいです。')
+        })
+    },
+    fetchChoices (quizId) {
+      this.$http.secured.get(`/api/v1/quizzes/${quizId}/choices`)
+        .then(response => {
+          this.choices = response.data
+        })
+        .catch(error => {
+          this.setError(error, '選択肢検索時エラー：　なにかがおかしいです。')
         })
     },
     publishQuestion () {
