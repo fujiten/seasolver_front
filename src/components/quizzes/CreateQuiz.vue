@@ -75,6 +75,9 @@ export default {
       this.$http.secured.post('/api/v1/quizzes', { quiz: { title: this.newQuiz.title, question: this.newQuiz.question, answer: this.newQuiz.answer } })
         .then(response => {
           this.message = '問題と回答のセットを保存しました。１０つ以上の「質問」を作成すれば、問題を公開することができます。'
+          this.newQuiz = ''
+          const id = response.data.id
+          this.$router.push(`/quizzes/${id}`)
         })
         .catch(error => this.setError(error, '問題の作成に失敗しました。'))
     }
