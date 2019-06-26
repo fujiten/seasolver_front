@@ -1,56 +1,64 @@
 <template>
   <div>
     <div class="text-red" v-if="error">{{ error }}</div>
+    <div>{{ $route.params.message }}</div>
     <div>{{ message }}</div>
-    <div v-if="quiz_status.be_solved">すでに正解済みの問題です。</div>
 
     <my-quiz v-if="isMine" />
     <others-quiz v-if="isOthers" />
 
-    <div v-if="!tryingQuiz && isOthers">
-      <a href="#" @click.prevent="solveQuiz(quiz.id)" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">挑戦する</a>
+    <div class="mb-5" v-if="beSolved">
+      <p>答え： {{ quiz.answer }}</p>
+      <p>(すでに正解済みの問題です。)</p>
     </div>
 
-    <div v-if="tryingQuiz">
-      <p>問題に挑戦中です。</p>
-      <p>
-      現在の質問数：{{ done_queries.length }} , 現在のポイント： {{ currentPoint }} , 誤答した回数: {{ quiz_status.failed_answer_times }}
-      </p>
-
-      <ul class="list-reset mt-4">
-        <p>完了した質問一覧</p>
-        <li class="py-4" v-for="(done_query, index) in done_queries" :key="done_query.id">
-          <p>{{ index + 1 }} : {{ done_query.body }}</p>
-          <p>{{ index + 1 }} : {{ done_query.answer }}  (獲得ポイント: {{ done_query.point }}, 要開示ポイント: {{ done_query.revealed_point }})</p>
-        </li>
-      </ul>
-
-      <ul class="list-reset mt-4">
-        <p>残っている質問一覧</p>
-        <li class="py-4" v-for="(query, index) in remainedQueries" :key="query.id">
-          <p>{{ index + 1 }} : {{ query.body }}</p>
-          <p>{{ index + 1 }} : {{ query.answer }}</p>
-          <button  @click.prevent="doQuery(query)" class="inlien-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">質問する</button>
-        </li>
-      </ul>
-
-      <a href="#" @click.prevent="toggleAnswer()" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">回答する</a>
-      <div v-if="confirmedOpen">
-        <p>複数の選択肢の中から正解を選んで下さい。誤った場合は、最終スコアの質問数が＋５されます。</p>
-        <p>＜注意＞回答に挑戦するボタンを押したあとは、回答を終えるまで新たに質問することは出来ません！</p>
-        <a href="#" @click.prevent="answerQuestion()" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">回答に挑戦する</a>
+    <div v-if="!beSolved">
+      <div v-if="!tryingQuiz && isOthers">
+        <a href="#" @click.prevent="solveQuiz(quiz.id)" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">挑戦する</a>
       </div>
 
-      <ul v-if="answerOpen" class="mt-4">
-        <p>選択肢一覧</p>
-        <li v-for="choice in choices" :key="choice.id">
-          <p>
-          選択肢の本文:{{ choice.body }}
-          <button href="#" @click.prevent="selectChoice(choice.id, choice.correctness)" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">これを選ぶ</button>
-          </p>
-        </li>
-      </ul>
+      <div v-if="tryingQuiz">
+        <p>問題に挑戦中です。</p>
+        <p>
+        現在の質問数：{{ done_queries.length }} , 現在のポイント： {{ currentPoint }} , 誤答した回数: {{ quiz_status.failed_answer_times }}
+        </p>
 
+        <ul class="list-reset mt-4">
+          <p>完了した質問一覧</p>
+          <li class="py-4" v-for="(done_query, index) in done_queries" :key="done_query.id">
+            <p>{{ index + 1 }} : {{ done_query.body }}</p>
+            <p>{{ index + 1 }} : {{ done_query.answer }}  (獲得ポイント: {{ done_query.point }}, 要開示ポイント: {{ done_query.revealed_point }})</p>
+          </li>
+        </ul>
+
+        <ul class="list-reset mt-4">
+          <p>残っている質問一覧</p>
+          <li v-for="(query, index) in remainedQueries" :key="query.id">
+            <div v-if="isMoreCurrentPointThanRevealedPoint(query)">
+              <p>{{ index + 1 }} : {{ query.body }}</p>
+              <button  @click.prevent="doQuery(query)" class="inlien-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">質問する</button>
+            </div>
+          </li>
+        </ul>
+
+        <a href="#" @click.prevent="toggleAnswer()" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">回答する</a>
+        <div v-if="confirmedOpen">
+          <p>複数の選択肢の中から正解を選んで下さい。誤った場合は、最終スコアの質問数が＋５されます。</p>
+          <p>＜注意＞回答に挑戦するボタンを押したあとは、回答を終えるまで新たに質問することは出来ません！</p>
+          <a href="#" @click.prevent="answerQuestion()" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">回答に挑戦する</a>
+        </div>
+
+        <ul v-if="answerOpen" class="mt-4">
+          <p>選択肢一覧</p>
+          <li v-for="choice in choices" :key="choice.id">
+            <p>
+            選択肢の本文:{{ choice.body }}
+            <button href="#" @click.prevent="selectChoice(choice.id, choice.correctness)" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">これを選ぶ</button>
+            </p>
+          </li>
+        </ul>
+
+      </div>
     </div>
   </div>
 
@@ -78,8 +86,15 @@ export default {
     }
   },
   computed: {
+    beSolved () {
+      if (this.quiz_status !== undefined && this.quiz_status !== null && this.quiz_status.be_solved) {
+        return true
+      } else {
+        return false
+      }
+    },
     tryingQuiz () {
-      if (this.quiz_status !== undefined) {
+      if (this.quiz_status) {
         this.fetchQuery()
         return true
       } else {
@@ -137,18 +152,21 @@ export default {
         .then(response => {
           this.queries = response.data.queries
           this.quiz_status = response.data.quiz_status
+          this.done_queries = []
           this.message = '問題に挑戦！'
         })
         .catch(error => this.setError(error, 'エラー： 問題に挑戦できません。'))
     },
     updateQuizStatus () {
-      this.$http.secured.patch(`/api/v1/quizzes/${this.quiz.id}/update_quiz_status`,
-        { quiz_status: { total_points: this.currentPoint,
-          query_times: this.done_queries.length} })
-        .then(response => {
-          this.quiz_status = response.data
-        })
-        .catch(error => this.setError(error, 'エラー： クイズ状況の更新に失敗しました。'))
+      if (this.isOthers) {
+        this.$http.secured.patch(`/api/v1/quizzes/${this.quiz.id}/update_quiz_status`,
+          { quiz_status: { total_points: this.currentPoint,
+            query_times: this.done_queries.length} })
+          .then(response => {
+            this.quiz_status = response.data
+          })
+          .catch(error => this.setError(error, 'エラー： クイズ状況の更新に失敗しました。'))
+      }
     },
     fetchQuery () {
       this.$http.secured.get(`/api/v1/quizzes/${this.$route.params.id}/queries`)
@@ -194,13 +212,12 @@ export default {
     },
     incrementQuizStatusFailedAnswer () {
       this.$http.secured.patch(`/api/v1/quizzes/${this.quiz.id}/update_quiz_status`,
-        { quiz_status: { be_solved: true }, increment: true })
+        { quiz_status: { be_solved: false }, increment: true })
         .then(response => {
           this.quiz_status = response.data
         })
         .catch(error => this.setError(error, 'エラー： クイズ状況の更新に失敗しました。'))
     },
-
     selectChoice (choiceId, correctness) {
       if (correctness) {
         this.updateQuizStatustoSolved()
@@ -208,6 +225,15 @@ export default {
       } else {
         this.incrementQuizStatusFailedAnswer()
         this.message = 'やってしまいましたね。間違いです。'
+        this.confirmedOpen = false
+        this.answerOpen = false
+      }
+    },
+    isMoreCurrentPointThanRevealedPoint (RemaindQuery) {
+      if (this.currentPoint >= RemaindQuery.revealed_point) {
+        return true
+      } else {
+        return false
       }
     }
   }

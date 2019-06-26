@@ -8,7 +8,7 @@
       <p>本文：「{{ quiz.question }}」</p>
     </div>
     <ul>
-      <p>質問一覧</p>
+      <p class="mt-3">質問一覧</p>
       <li v-for="query in queries" :key="query.id">
         <p>
         カテゴリ:{{ query.category }}
@@ -16,6 +16,7 @@
         <p>
         {{ query.body }} : {{ query.answer }} [ 獲得ポイント: {{ query.point }} ] [ 開示ポイント： {{ query.revealed_point }} ]
         </p>
+        <button href="#" @click.prevent="jumpToQuery(query.id)" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">編集</button>
       </li>
     </ul>
     <ul class="mt-4">
@@ -162,7 +163,8 @@ export default {
       error: '',
       message: '',
       quiz: this.$store.getters.quiz,
-      author: this.$store.getters.author
+      author: this.$store.getters.author,
+      open: true
     }
   },
   computed: {
@@ -179,10 +181,20 @@ export default {
     this.fetchChoices(this.quiz.id)
   },
   methods: {
+    resetMessages () {
+      this.error = ''
+      this.message = ''
+    },
     toggleQuery () {
+      if (!this.queryOpen) {
+        this.resetMessages()
+      }
       this.queryOpen = !this.queryOpen
     },
     toggleChoice () {
+      if (!this.choiceOpen) {
+        this.resetMessages()
+      }
       this.choiceOpen = !this.choiceOpen
     },
     setError (error, text) {
@@ -263,6 +275,9 @@ export default {
         .catch(error => {
           this.setError(error, '下書き変更時エラー：　なにかがおかしいです。')
         })
+    },
+    jumpToQuery (queryId) {
+      this.$router.push(`/queries/${queryId}/edit`)
     }
   }
 }
