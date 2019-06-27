@@ -3,7 +3,7 @@
     <div class="text-indigo-light">
       <div>{{ message }}</div>
       <div class="text-red" v-if="error">{{ error }}</div>
-      <h1 class="mb-5">MyQuiz ({{ quiz.published }})</h1>
+      <h1 class="mb-5">MyQuiz ({{ isPublished }})</h1>
       <p>タイトル：「{{ quiz.title }}」</p>
       <p>本文：「{{ quiz.question }}」</p>
     </div>
@@ -133,8 +133,6 @@
               v-model="newChoice.correctness"
             />
             <label for="choice_correctness_true" class="label">不正解</label>
-
-            <p>{{ newChoice.correctness }}</p>
           </div>
 
         <input type="submit" value="選択肢作成" class="width-font-sans font-bold px-4 rounded cursor-pointer no-underline bg-green hover:bg-green-dark block py-4 text-white items-center justify-center" />
@@ -168,11 +166,18 @@ export default {
     }
   },
   computed: {
-    moreMinimumQuery: function () {
+    moreMinimumQuery () {
       if (this.queries.length > 9) {
         return true
       } else {
         return false
+      }
+    },
+    isPublished () {
+      if (this.quiz.published === 'drafted') {
+        return '下書き'
+      } else {
+        return '投稿済'
       }
     }
   },

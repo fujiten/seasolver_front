@@ -32,9 +32,6 @@
           <router-link to="/signin" class="link-grey">ログイン</router-link>
         </div>
 
-        <div class="my-4">
-          <router-link to="/users" class="link-grey">Check users</router-link>
-        </div>
       </form>
     </div>
   </div>
