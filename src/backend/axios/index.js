@@ -22,7 +22,7 @@ securedAxiosInstance.interceptors.request.use(config => {
     config.headers = {
       ...config.headers,
 
-      'X-CSRF-TOKEN': localStorage.csrf
+      'X-CSRF-TOKEN': localStorage.getItem('csrf')
     }
   }
 
