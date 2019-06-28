@@ -23,7 +23,7 @@
 
         <div class="lnu_container">
           <p v-bind:class="{ lovercase_valid: contains_lovercase }">小文字</p>
-          <p v-bind:class="{ number_valid: contains_number }">数値</p>
+          <p v-bind:class="{ number_valid: contains_number }">数字</p>
           <p v-bind:class="{ uppercase_valid: contains_uppercase }">大文字</p>
         </div>
 
@@ -78,24 +78,6 @@ export default {
       } else {
         return ''
       }
-    },
-    checkPasswordStrength () {
-      let sum = 0
-      sum += /.{8,}/.test(this.password) ? 20 : 0
-      sum += /\d/.test(this.password)    ? 20 : 0
-      sum += /[a-z]/.test(this.password) ? 20 : 0
-      sum += /[A-Z]/.test(this.password) ? 20 : 0        
-      if (sum === 0) {
-        return 'とても低い'
-      } else if (sum === 20) {
-        return '低い'
-      } else if (sum === 40) {
-        return '少し低い'
-      } else if (sum === 60) {
-        return '普通'
-      } else if (sum === 80) {
-        return '問題なし'
-      }
     }
   },
   methods: {
@@ -136,33 +118,32 @@ export default {
       this.$router.push('/signin')
     },
     p_len () {
-      this.password_length = this.password.length;
+      this.password_length = this.password.length
       if (this.password_length > 5) {
-        this.valid_password_length = true;
+        this.valid_password_length = true
       } else {
-        this.valid_password_length = false;
+        this.valid_password_length = false
       }
 
       if (this.password_length > 0) {
-        this.typed = true;
+        this.typed = true
       } else {
-        this.typed = false;
+        this.typed = false
       }
 
-      this.contains_lovercase = /[a-z]/.test(this.password);
-      this.contains_number = /\d/.test(this.password);
-      this.contains_uppercase = /[A-Z]/.test(this.password);
+      this.contains_lovercase = /[a-z]/.test(this.password)
+      this.contains_number = /\d/.test(this.password)
+      this.contains_uppercase = /[A-Z]/.test(this.password)
 
       // Check if the password is valid
-      if (this.contains_lovercase == true && this.contains_number == true) {
-        this.valid_password = false;
+      if (this.contains_lovercase === true && this.contains_number === true) {
+        this.valid_password = false
         if (
-          this.contains_uppercase == true &&
-          this.valid_password_length == true
-        )
-          this.valid_password = true;
+          this.contains_uppercase === true &&
+          this.valid_password_length === true
+        ) { this.valid_password = true }
       } else {
-        this.valid_password = false;
+        this.valid_password = false
       }
     }
   }
