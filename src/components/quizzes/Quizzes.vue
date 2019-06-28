@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-md m-auto py-10 border-4 border-white">
     <div class="text-red" v-if="error">{{ error }}</div>
-    <h3 class="font-mono text-3xl text-indigo-lightest mb-4 ml-4">問題一覧</h3>
+    <h3 class="font-mono text-3xl mb-4 ml-4">問題一覧</h3>
 
     <hr class="border border-grey-light my-6" />
 

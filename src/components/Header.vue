@@ -1,7 +1,7 @@
 <template>
-  <header class="bg-blue-darkest py-4">
+  <header class="py-4">
     <div class="container m-auto flex flex-wrap items-center justify-end">
-      <svg version="1.1" class="fill-current text-indigo-lighter"
+      <svg version="1.1" class="fill-current text-indigo-darkest"
         width="36.342px" height="36.342px" viewBox="0 0 569.342 569.342" style="enable-background:new 0 0 569.342 569.342;"
         xml:space="preserve">
         <g>
@@ -40,7 +40,7 @@
       </svg>
 
       <div class="flex-1 flex items-center">
-        <router-link to="/" class="text-lg font-mono pl-4 font-bold no-underline text-indigo-lighter hover:text-indigo-darker">Sea Solver - ウミガメのスープを解くサイト -</router-link>
+        <router-link to="/" class="text-lg font-mono pl-4 font-bold no-underline text-black hover:text-indigo-darker">Sea Solver - ウミガメのスープを解くサイト -</router-link>
       </div>
 
       <div>
