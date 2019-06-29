@@ -97,10 +97,6 @@ export default {
 
       localStorage.csrf = response.data.csrf
 
-      const uid = response.data.uid
-      localStorage.uid = response.data.uid
-      this.$store.dispatch('setUserId', uid)
-
       this.$router.replace('/')
     },
     signupFailed (error) {
