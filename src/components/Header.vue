@@ -75,6 +75,7 @@ export default {
         .then(response => {
           delete localStorage.csrf
           delete localStorage.signedIn
+          delete localStorage.access
           this.$store.dispatch('switchLogin')
           this.$router.replace('/')
         })
@@ -82,6 +83,7 @@ export default {
           this.setError(error, '認証切れの可能性があります。トークンを削除してログアウトします。')
           delete localStorage.csrf
           delete localStorage.signedIn
+          delete localStorage.access
           this.$store.dispatch('switchLogin')
           this.$router.replace('/')
         })

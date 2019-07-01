@@ -96,6 +96,7 @@ export default {
       this.$store.dispatch('switchLogin')
 
       localStorage.csrf = response.data.csrf
+      localStorage.access = response.data.access
 
       this.$router.replace('/')
     },
@@ -103,7 +104,7 @@ export default {
       this.error = (error.response && error.response.data && error.response.data.error) || 'Something went wrong'
       delete localStorage.csrf
       delete localStorage.signedIn
-      delete localStorage.uid
+      delete localStorage.access
     },
     checkSignedIn () {
       if (localStorage.signedIn) {

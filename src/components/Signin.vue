@@ -58,6 +58,7 @@ export default {
       this.$store.dispatch('switchLogin')
 
       localStorage.csrf = response.data.csrf
+      localStorage.access = response.data.access
 
       this.$router.replace('/')
     },
