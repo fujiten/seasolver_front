@@ -109,9 +109,11 @@ export default {
     },
     currentPoint () {
       let sum = 0
-      this.done_queries.forEach(query => {
-        sum += query.point
-      })
+      if (this.done_querie) {
+        this.done_queries.forEach(query => {
+          sum += query.point
+        })
+      }
       return sum
     },
     remainedQueries () {
@@ -168,7 +170,7 @@ export default {
         .catch(error => this.setError(error, 'エラー： 問題に挑戦できません。'))
     },
     updateQuizStatus () {
-      if (this.isOthers) {
+      if (this.isOthers && this.tryingQuiz) {
         this.$http.secured.patch(`/api/v1/quizzes/${this.quiz.id}/update_quiz_status`,
           { quiz_status: { total_points: this.currentPoint,
             query_times: this.done_queries.length} })
