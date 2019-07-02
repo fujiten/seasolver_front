@@ -10,7 +10,7 @@
         <div class="text-red">{{ $route.params.error }}</div>
         <div class="text-red" v-if="error">{{ error }}</div>
 
-        <div class="mb-6">
+        <div class="mb-3">
           <input type="email" v-model="email" class="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" placeholder="メールアドレス">
         </div>
 

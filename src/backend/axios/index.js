@@ -25,7 +25,6 @@ securedAxiosInstance.interceptors.request.use(config => {
       'Authorization': `Bearer ${localStorage.access}`
     }
   }
-  console.log(localStorage.csrf)
   return config
 })
 

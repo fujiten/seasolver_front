@@ -195,14 +195,14 @@ export default {
 .lnu_container {
   display: block;
   margin: 10px auto;
-  width: 320px;
+  width: 290px;
   height: auto;
   display: flex;
   justify-content: space-between;
 }
 
 .lnu_container p {
-  width: 100px;
+  width: 90px;
   height: auto;
   font-size: 12px;
   line-height: 1.2;
