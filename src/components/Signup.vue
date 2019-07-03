@@ -164,10 +164,6 @@ export default {
   margin-bottom: 10px;
 }
 
-#app input[type="password"] {
-
-}
-
 #app input[type="password"]:focus {
   border: 1px solid #2196F3;
 }
