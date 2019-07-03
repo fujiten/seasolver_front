@@ -3,9 +3,14 @@
     <div class="border p-10 border-grey-light shadow rounded">
       <h3 class="text-2xl mb-10 text-center">新規登録</h3>
       <form @submit.prevent="signup">
-        <div class="text-red mb-5" v-if="error">{{ error }}</div>
 
-        <div class="mb-6">
+        <div v-if="error">
+          <ul v-for="(err, index) in error" v-bind:key="index">
+            <li class="text-red">{{ err }}</li>
+          </ul>
+        </div>
+
+        <div class="mt-6 mb-6">
           <label for="email" class="label">メールアドレス <span class="bg-red rounded p-1 text-sm text-white">必須</span></label>
           <input type="email" v-model="email" class="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" placeholder="seasolver@example.com">
         </div>
@@ -101,7 +106,7 @@ export default {
       this.$router.replace('/')
     },
     signupFailed (error) {
-      this.error = (error.response && error.response.data && error.response.data.error) || 'Something went wrong'
+      this.error = (error.response && error.response.data && error.response.data.error) || ['登録に失敗しました。']
       delete localStorage.csrf
       delete localStorage.signedIn
       delete localStorage.access

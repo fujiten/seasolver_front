@@ -1,45 +1,51 @@
 <template>
   <div class="max-w-md m-auto py-10 border-4 border-white">
-    <div class="text-red" v-if="error">{{ error }}</div>
-    <h3 class="font-mono text-3xl text-indigo-lightest mb-4 ml-4">問題作成</h3>
+    <h3 class="font-mono text-3xl mb-10 text-center">問題と解説のセットを仮作成</h3>
+    <p class="text-center">まずは「問題」と「解説」のセットを作ろう。</p>
+    <p class="text-center">作った問題に「質問」を追加していくのは、それからだ！</p>
+
+    <div class="mt-6" v-if="error">
+      <ul v-for="(err, index) in error" v-bind:key="index">
+        <li class="text-red">{{ err }}</li>
+      </ul>
+    </div>
 
     <form @submit.prevent="addQuiz">
-      <div class="mb-6">
-        <label for="quiz_title" class="label">タイトル</label>
+      <div class="mt-6 mb-6">
+        <label for="quiz_title" class="label text-xl">タイトル</label><span> (20文字以内)</span>
         <input
           id="quiz_title"
-          class="input w-full"
+          class="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           autofocus autocomplete="off"
-          placeholder="タイトル 例：「ウミガメのスープ」"
+          placeholder="例）ウミガメのスープ"
           v-model="newQuiz.title" />
       </div>
 
       <div class="mb-6">
-        <label for="quiz_question" class="label">問題文</label>
+        <label for="quiz_question" class="label text-xl">問題</label>
         <textarea
           id="quiz_question"
-          class="w-full shadow-inner p-4 border-0"
+          class="h-32 mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           autofocus autocomplete="off"
-          placeholder="ウミガメのスープを食べた男は、そのあとすぐに海に飛び込んでしまった。どうしてだろう。"
+          placeholder="例）ウミガメのスープを食べた男は、そのあとすぐに海に飛び込んでしまった。どうしてだろう。"
           v-model="newQuiz.question"
         />
        </div>
 
       <div class="mb-6">
-        <label for="quiz_answer" class="label">回答</label>
+        <label for="quiz_answer" class="label text-xl">解説</label>
         <textarea
           id="quiz_answer"
-          class="w-full shadow-inner p-4 border-0"
+          class="h-32 mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           autofocus autocomplete="off"
-          placeholder="あまりにもウミガメのスープがおいしくて、居ても経ってもいられなくなったから。"
+          placeholder="例）あまりにもウミガメのスープがおいしくて、居ても経ってもいられなくなったから。"
           v-model="newQuiz.answer"
         />
       </div>
 
       <p>タイトル： {{ newQuiz.title }}</p>
       <p>問題： {{ newQuiz.question }}</p>
-      <p>回答： {{ newQuiz.answer }}</p>
-      <div class="w-full shadow-inner p-4 border-0 text-indigo-lightest">{{ newQuiz }}</div>
+      <p class="mb-6">回答： {{ newQuiz.answer }}</p>
 
       <div>{{ message }}</div>
 
@@ -79,7 +85,7 @@ export default {
           const id = response.data.id
           this.$router.push(`/quizzes/${id}`)
         })
-        .catch(error => this.setError(error, '問題の作成に失敗しました。'))
+        .catch(error => this.setError(error, ['問題の作成に失敗しました。']))
     }
   }
 }
