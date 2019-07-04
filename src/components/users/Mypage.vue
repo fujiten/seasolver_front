@@ -21,7 +21,7 @@
         <div class="m-4">
           <h2 class="inline">{{ user.name }}</h2>
           <div>ユーザーレベル：{{ user.level }}</div>
-          <div>コメント:{{ user.description }}</div>
+          <div>コメント：{{ user.description }}</div>
           <div></div>
         </div>
       </div>
@@ -34,7 +34,7 @@
             v-bind="item" :key="item.id"
             v-model="currentId"/>
         </div>
-        <div class="contents">
+        <div class="contents y-full">
           <transition>
             <section class="item" :key="currentId">
               <div v-show="currentId === 1">
@@ -328,7 +328,7 @@ export default {
   transform: translateX(-100%);
 }
 .v-leave-to {
-  transform: translateX(100%);
+  opacity: 0;
 }
 
 </style>
