@@ -109,7 +109,7 @@ export default {
     },
     currentPoint () {
       let sum = 0
-      if (this.done_querie) {
+      if (this.done_queries) {
         this.done_queries.forEach(query => {
           sum += query.point
         })
