@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="max-w-md m-auto py-10">
     <div class="text-red" v-if="error">{{ error }}</div>
     <div>
-      <p>ユーザー名：「{{ user.name }}」</p>
+      <p>ユーザー名：{{ user.name }}</p>
       <p>ユーザーレベル：{{ user.level }}</p>
       <p>作った問題一覧：準備中...</p>
     </div>

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="text-indigo-light">
+    <div class>
       <div>{{ message }}</div>
       <div class="text-red" v-if="error">{{ error }}</div>
-      <h1 class="mb-5">MyQuiz ({{ isPublished }})</h1>
+      <h1 class="font-bold text-lg mb-5">MyQuiz ({{ isPublished }})</h1>
       <p>タイトル：「{{ quiz.title }}」</p>
       <p>本文：「{{ quiz.question }}」</p>
     </div>
@@ -31,11 +31,11 @@
     <transition name="fade">
       <div v-show="queryOpen">
         <form @submit.prevent="addQuery(quiz.id)">
-          <div class="m-6">
+          <div class="mt-6 mb-3">
             <label for="query_category" class="label">カテゴリ</label>
             <select
               id="query_category"
-              class="shadow-inner p-4 border-0 height-3"
+              class="mt-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               autofocus autocomplete="off"
               v-model.number="newQuery.category"
             >
@@ -49,54 +49,56 @@
             </select>
           </div>
 
-          <div class="m-6">
+          <div class="my-3">
             <label for="query_body" class="label">質問</label>
             <textarea
               id="query_body"
-              class="w-full shadow-inner p-4 border-0"
+              class="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               autofocus autocomplete="off"
               placeholder="男がウミガメのスープを食べたのは初めてでしたか？"
               v-model="newQuery.body"
             />
           </div>
 
-          <div class="m-6">
+          <div class="my-3">
             <label for="query_answer" class="label">回答</label>
             <textarea
               id="query_answer"
-              class="w-full shadow-inner p-4 border-0"
+              class="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               autofocus autocomplete="off"
               placeholder="いいえ。以前にもどこかで食べたことがありました。"
               v-model="newQuery.answer"
             />
           </div>
 
-          <div class="m-6">
+          <div class="my-3">
             <label for="query_point" class="label">獲得ポイント</label>
             <input
               id="query_point"
-              class="shadow-inner p-4 border-0"
+              class="my-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               autofocus autocomplete="off"
               placeholder="1"
               type="number"
               min="0"
               v-model.number="newQuery.point"
-            /> pt ( 設定：この質問を行うと得られるポイント)
+            /> pt
+            <p>( 設定：この質問を行うと得られるポイント)</p>
           </div>
 
-          <div class="m-6">
+          <div class="my-3">
             <label for="query_revealed_point" class="label">開示ポイント</label>
             <input
               id="query_revealed_point"
-              class="shadow-inner p-4 border-0"
+              class="my-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               autofocus autocomplete="off"
               placeholder="10"
               type="number"
               min="0"
               v-model.number="newQuery.revealedPoint"
-            /> pt ( 設定：この質問を出現させるために必要なポイント)
+            /> pt
+            <p>( 設定：この質問を出現させるために必要なポイント)</p>
           </div>
-        <input type="submit" value="問題作成" class="width-font-sans font-bold px-4 rounded cursor-pointer no-underline bg-green hover:bg-green-dark block py-4 text-white items-center justify-center" />
+        <input type="submit" value="問題作成" class="mt-5 width-font-sans font-bold px-4 py-2 rounded cursor-pointer no-underline bg-green hover:bg-green-dark block text-white items-center justify-center" />
         </form>
       </div>
     </transition>
