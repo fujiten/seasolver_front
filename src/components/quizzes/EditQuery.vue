@@ -84,6 +84,9 @@ export default {
     }
   },
   created () {
+    if (!localStorage.signedIn) {
+      this.$router.replace('/')
+    }
     this.fetchQuery()
   },
   methods: {
