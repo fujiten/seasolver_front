@@ -9,6 +9,7 @@ import Mypage from '@/components/users/Mypage.vue'
 import Quizzes from '@/components/quizzes/Quizzes.vue'
 import Quiz from '@/components/quizzes/Quiz.vue'
 import CreateQuiz from '@/components/quizzes/CreateQuiz'
+import EditQuiz from '@/components/quizzes/EditQuiz'
 import EditQuery from '@/components/quizzes/EditQuery'
 import NotFound from '@/components/NotFound.vue'
 
@@ -61,6 +62,11 @@ export default new Router({
       path: '/quizzes/:id',
       name: 'Quiz',
       component: Quiz
+    },
+    {
+      path: '/quizzes/:id/edit',
+      name: 'EditQuiz',
+      component: EditQuiz
     },
     {
       path: '/queries/:id/edit',
