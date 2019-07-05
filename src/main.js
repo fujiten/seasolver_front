@@ -6,10 +6,18 @@ import router from './router'
 import VueAxios from 'vue-axios'
 import { securedAxiosInstance, plainAxiosInstance } from './backend/axios'
 import './main.css'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import VTooltip from 'v-tooltip'
+
+library.add(faTrashAlt, faEdit)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
 
 Vue.use(Vuex)
+Vue.use(VTooltip)
 
 Vue.use(VueAxios, {
   secured: securedAxiosInstance,
