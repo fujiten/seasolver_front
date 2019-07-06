@@ -328,7 +328,7 @@ export default {
     },
     toggleChoice () {
       if (!this.choiceOpen) {
-        this.resetMessages()
+        this.resetAllMessages()
       }
       this.choiceOpen = !this.choiceOpen
     },
