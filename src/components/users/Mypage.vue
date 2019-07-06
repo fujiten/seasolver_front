@@ -1,7 +1,11 @@
 <template>
   <div>
     <div class="max-w-md m-auto py-10">
-      <div class="text-red" v-if="error">{{ error }}</div>
+      <div class="my-6" v-if="error">
+        <ul v-for="(err, index) in error" v-bind:key="index">
+          <li class="text-red">{{ err }}</li>
+        </ul>
+      </div>
       <div>{{ $route.params.message }}</div>
 
       <div>

@@ -8,7 +8,9 @@
       <p>解説：「{{ quiz.answer }}」</p>
       <div class="flex justify-end">
         <button @click.prevent="jumpToEditQuiz(quiz.id)" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded"><font-awesome-icon icon="edit" /> 編集</button>
-        <button @click.prevent="deleteQuiz(quiz.id)" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-red hover:text-white text-red border border-red no-underline font-bold py-2 px-4 mr-2 rounded"><font-awesome-icon icon="trash-alt" /> 削除</button>
+        <button @click.prevent="showDeleteDialog(quiz.id, deleteQuiz)" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-red hover:text-white text-red border border-red no-underline font-bold py-2 px-4 mr-2 rounded"><font-awesome-icon icon="trash-alt" /> 削除</button>
+        <v-dialog/>
+
       </div>
     </div>
     <hr class="border border-grey" />
@@ -23,7 +25,7 @@
           <p> (獲得ポイント：{{ query.point }}) (開示ポイント：{{ query.revealed_point }})</p>
           <div class="flex justify-end">
             <button v-tooltip="'編集'" @click.prevent="jumpToQuery(query.id)" class="m-2"><font-awesome-icon icon="edit" /></button>
-            <button v-tooltip="'削除'" @click.prevent="deleteQuery(query.id)" class="m-2"><font-awesome-icon icon="trash-alt" /></button>
+            <button v-tooltip="'削除'" @click.prevent="showDeleteDialog(query.id, deleteQuery)" class="m-2"><font-awesome-icon icon="trash-alt" /></button>
           </div>
         </li>
       </div>
@@ -108,6 +110,11 @@
         </form>
       </div>
     </transition>
+    <div class="my-6" v-if="queryError">
+      <ul v-for="(err, index) in queryError" v-bind:key="index">
+        <li class="text-red">{{ err }}</li>
+      </ul>
+    </div>
 
     <hr class="border border-grey mt-5" />
     <div>
@@ -120,7 +127,7 @@
             <p class="mt-2">({{ choice.correctness | booleanToJapanese }})</p>
             <div class="flex justify-end" data-original-title="返信">
               <button v-tooltip="'編集'" @click.prevent="toggleEditChoice(choice.id)" class="m-2"><font-awesome-icon icon="edit" /></button>
-              <button v-tooltip="'削除'" @click.prevent="deleteChoice(choice.id)" class="m-2"><font-awesome-icon icon="trash-alt" /></button>
+              <button v-tooltip="'削除'" @click.prevent="showDeleteDialog(choice.id, deleteChoice)" class="m-2"><font-awesome-icon icon="trash-alt" /></button>
             </div>
             <transition name="fade">
               <div v-if="editChoiceOpen">
@@ -158,7 +165,6 @@
 
                   <input type="submit" value="選択肢編集" class="m-2 width-font-sans font-bold px-4 rounded cursor-pointer no-underline bg-green hover:bg-green-dark block py-2 text-white items-center justify-center" />
                   </form>
-
                 </div>
               </div>
             </transition>
@@ -206,6 +212,11 @@
         </form>
       </div>
     </transition>
+    <div class="my-6" v-if="choiceError">
+      <ul v-for="(err, index) in choiceError" v-bind:key="index">
+        <li class="text-red">{{ err }}</li>
+      </ul>
+    </div>
     <hr class="border border-grey mt-5" />
 
     <p>問題を公開するには、10個以上の質問と、2つ以上の選択肢が必要です。</p>
@@ -232,6 +243,8 @@ export default {
       choiceOpen: false,
       editChoiceOpen: false,
       error: '',
+      queryError: '',
+      choiceError: '',
       message: '',
       queryMessage: '',
       choiceMessage: '',
@@ -280,13 +293,36 @@ export default {
     this.fetchChoices(this.quiz.id)
   },
   methods: {
-    resetMessages () {
+    showDeleteDialog (id, doneHandler) {
+      this.$modal.show('dialog', {
+        title: '確認',
+        text: '本当に削除してよいですか？',
+        buttons: [
+          {
+            title: '削除する',
+            handler: () => {
+              doneHandler(id)
+              this.$modal.hide('dialog')
+            }
+          },
+          {
+            title: 'しない',
+            default: true
+          }
+        ]
+      })
+    },
+    resetAllMessages () {
       this.error = ''
+      this.queryError = ''
+      this.choiceError = ''
       this.message = ''
+      this.queryMessage = ''
+      this.choiceMessage = ''
     },
     toggleQuery () {
       if (!this.queryOpen) {
-        this.resetMessages()
+        this.resetAllMessages()
       }
       this.queryOpen = !this.queryOpen
     },
@@ -298,6 +334,12 @@ export default {
     },
     setError (error, text) {
       this.error = (error.response && error.response.data && error.response.data.error) || text
+    },
+    setQueryError (error, text) {
+      this.queryError = (error.response && error.response.data && error.response.data.error) || text
+    },
+    setChoiceError (error, text) {
+      this.choiceError = (error.response && error.response.data && error.response.data.error) || text
     },
     addQuery (quizId) {
       const value = this.newQuery
@@ -316,7 +358,7 @@ export default {
           this.queryMessage = '質問を作成しました！'
           this.toggleQuery()
         })
-        .catch(error => this.setError(error, '質問の作成に失敗しました。'))
+        .catch(error => this.setQueryError(error, '質問の作成に失敗しました'))
     },
     addChoice (quizId) {
       const value = this.newChoice
@@ -332,8 +374,9 @@ export default {
           this.newChoice = {}
           this.choiceMessage = '選択肢を作成しました！'
           this.toggleChoice()
+          this.choiceError = ''
         })
-        .catch(error => this.setError(error, '選択肢の作成に失敗しました。'))
+        .catch(error => this.setChoiceError(error, '選択肢の作成に失敗しました。'))
     },
     fetchQueries (quizId) {
       this.$http.secured.get(`/api/v1/quizzes/${quizId}/queries`)
@@ -382,31 +425,25 @@ export default {
       this.$router.push(`/queries/${queryId}/edit`)
     },
     deleteQuiz (quizId) {
-      const result = confirm('この問題を削除しますか？（削除した問題は復元できません。）')
-      if (result) {
-        this.$http.secured.delete(`/api/v1/quizzes/${this.$route.params.id}`)
-          .then(response => {
-            const quiz = response.data
-            return this.$router.push({name: 'Mypage', params: { message: `問題「${quiz.title}」を削除しました` }})
-          })
-          .catch(error => {
-            this.setError(error, '問題削除時エラー：　なにかがおかしいです。')
-          })
-      }
+      this.$http.secured.delete(`/api/v1/quizzes/${this.$route.params.id}`)
+        .then(response => {
+          const quiz = response.data
+          return this.$router.push({name: 'Mypage', params: { message: `問題「${quiz.title}」を削除しました` }})
+        })
+        .catch(error => {
+          this.setError(error, '問題削除時エラー：　なにかがおかしいです。')
+        })
     },
     deleteQuery (queryId) {
-      const result = confirm('この質問を削除しますか？（削除した質問は復元できません。）')
-      if (result) {
-        this.$http.secured.delete(`/api/v1/quizzes/${this.$route.params.id}/queries/${queryId}`)
-          .then(response => {
-            const returndQuery = response.data
-            this.queryMessage = `「${returndQuery.body}」という質問を削除しました`
-            this.queries = this.queries.filter(query => query.id !== returndQuery.id)
-          })
-          .catch(error => {
-            this.setError(error, '質問削除時エラー：　なにかがおかしいです。')
-          })
-      }
+      this.$http.secured.delete(`/api/v1/quizzes/${this.$route.params.id}/queries/${queryId}`)
+        .then(response => {
+          const returndQuery = response.data
+          this.queryMessage = `「${returndQuery.body}」という質問を削除しました`
+          this.queries = this.queries.filter(query => query.id !== returndQuery.id)
+        })
+        .catch(error => {
+          this.setError(error, '質問削除時エラー：　なにかがおかしいです。')
+        })
     },
     toggleEditChoice (choiceId) {
       const choice = this.choices.filter(choice => choice.id === choiceId)[0]
@@ -435,18 +472,15 @@ export default {
       }
     },
     deleteChoice (choiceId) {
-      const result = confirm('この選択肢を削除しますか？（削除した選択肢は復元できません。）')
-      if (result) {
-        this.$http.secured.delete(`/api/v1/quizzes/${this.quiz.id}/choices/${choiceId}`)
-          .then(response => {
-            const returnedChoice = response.data
-            this.choiceMessage = `「${returnedChoice.body}」という選択肢を削除しました`
-            this.choices = this.choices.filter(choice => choice.id !== returnedChoice.id)
-          })
-          .catch(error => {
-            this.setError(error, '質問削除時エラー：　なにかがおかしいです。')
-          })
-      }
+      this.$http.secured.delete(`/api/v1/quizzes/${this.quiz.id}/choices/${choiceId}`)
+        .then(response => {
+          const returnedChoice = response.data
+          this.choiceMessage = `「${returnedChoice.body}」という選択肢を削除しました`
+          this.choices = this.choices.filter(choice => choice.id !== returnedChoice.id)
+        })
+        .catch(error => {
+          this.setError(error, '質問削除時エラー：　なにかがおかしいです。')
+        })
     }
   }
 }

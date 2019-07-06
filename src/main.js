@@ -10,6 +10,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VTooltip from 'v-tooltip'
+import VModal from 'vue-js-modal'
 
 library.add(faTrashAlt, faEdit)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
@@ -18,6 +19,7 @@ Vue.config.productionTip = false
 
 Vue.use(Vuex)
 Vue.use(VTooltip)
+Vue.use(VModal, { dialog: true })
 
 Vue.use(VueAxios, {
   secured: securedAxiosInstance,
