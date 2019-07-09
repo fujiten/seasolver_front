@@ -21,7 +21,7 @@
         <li>
           <p class="inline-block font-bold text-lg">Q.{{ query.body }}</p>
           <p class="mt-2 font-bold text-lg"> A.{{ query.answer }}</p>
-          <p class="mt-2">カテゴリ:{{ query.category }}</p>
+          <p class="mt-2">カテゴリ:{{ query.category | categoryToJapanese  }}</p>
           <p> (獲得ポイント：{{ query.point }}) (開示ポイント：{{ query.revealed_point }})</p>
           <div class="flex justify-end">
             <button v-tooltip="'編集'" @click.prevent="jumpToQuery(query.id)" class="m-2"><font-awesome-icon icon="edit" /></button>
@@ -97,7 +97,7 @@
               id="query_revealed_point"
               class="my-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               autofocus autocomplete="off"
-              placeholder="10"
+              placeholder="0"
               type="number"
               min="0"
               v-model.number="newQuery.revealedPoint"
@@ -259,6 +259,24 @@ export default {
         return '正解'
       } else {
         return '不正解'
+      }
+    },
+    categoryToJapanese (value) {
+      switch (value) {
+        case '不明':
+          return '不明'
+        case 'Who':
+          return '人物について'
+        case 'What':
+          return '出来事について'
+        case 'When':
+          return '時間について'
+        case 'Where':
+          return '場所について'
+        case 'Why':
+          return '理由について'
+        case 'How':
+          return '方法について'
       }
     }
   },

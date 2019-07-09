@@ -12,7 +12,7 @@
           class="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           autofocus autocomplete="off"
           placeholder="例）ウミガメのスープ"
-          v-model="newQuiz.title" />
+          v-model.trim="newQuiz.title" />
       </div>
 
       <div class="mb-6">
@@ -22,7 +22,7 @@
           class="h-32 mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           autofocus autocomplete="off"
           placeholder="例）ウミガメのスープを食べた男は、そのあとすぐに海に飛び込んでしまった。どうしてだろう。"
-          v-model="newQuiz.question"
+          v-model.trim="newQuiz.question"
         />
        </div>
 
@@ -33,7 +33,7 @@
           class="h-32 mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           autofocus autocomplete="off"
           placeholder="例）あまりにもウミガメのスープがおいしくて、居ても経ってもいられなくなったから。"
-          v-model="newQuiz.answer"
+          v-model.trim="newQuiz.answer"
         />
       </div>
       <hr class="border border-grey my-6" />

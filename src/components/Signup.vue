@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     signup () {
-      this.$http.plain.post('/signup', {email: this.email, name: this.name, password: this.password, password_confirmation: this.password_confirmation})
+      this.$http.plain.post('/signup', {user: { email: this.email, name: this.name, password: this.password, password_confirmation: this.password_confirmation }})
         .then(response => this.signupSuccesful(response))
         .catch(error => this.signupFailed(error))
     },

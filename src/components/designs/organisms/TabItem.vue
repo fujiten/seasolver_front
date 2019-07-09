@@ -13,6 +13,7 @@ export default {
   },
   computed: {
     active () {
+      // このvalueはinput要素の中身（つまり親のv-model="currentId"と同値である）
       return this.value === this.id ? 'active' : false
     }
   }
