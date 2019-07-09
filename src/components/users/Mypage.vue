@@ -7,11 +7,9 @@
         </ul>
       </div>
       <div>{{ $route.params.message }}</div>
-
       <div>
         <div>
           <hr class="border border-grey" />
-          <h1 class="text-xl font-bold">マイページ</h1>
           <div>
             <button @click="dropdown" class="float-right mr-3 mb-1 bg-grey-light hover:bg-grey text-grey-darkest font-bold py-1 px-1 rounded-lg inline-flex items-center"><span>…</span></button>
             <transition name="list">
@@ -23,12 +21,7 @@
           </div>
 
         </div>
-        <div class="m-4">
-          <h2 class="inline">{{ user.name }}</h2>
-          <div>ユーザーレベル：{{ user.level }}</div>
-          <div>コメント：{{ user.description }}</div>
-          <div></div>
-        </div>
+        <UserDescription v-bind="user" v-bind:avatar="avatar" />
       </div>
 
       <hr class="border border-grey my-6" />
@@ -198,13 +191,15 @@
 
 <script>
 import TabItem from '@/components/designs/organisms/TabItem.vue'
+import UserDescription from '@/components/designs/organisms/UserDescription.vue'
 export default {
   name: 'Mypage',
-  components: { TabItem },
+  components: { TabItem, UserDescription },
   data () {
     return {
-      user: {},
       error: '',
+      user: {},
+      avatar: '',
       draftedQuizzes: {},
       publishedQuizzes: {},
       tryingQuizzes: {},
@@ -244,9 +239,20 @@ export default {
       this.$http.secured.get(`/api/v1/users/show_mypage`)
         .then(response => {
           this.user = response.data.current_user
+          this.avatar = response.data.encoded_image
           this.draftedQuizzes = response.data.my_quizzes.drafted
           this.publishedQuizzes = response.data.my_quizzes.published
           this.tryingQuizzes = response.data.trying_quizzes
+        })
+        .catch(error => {
+          this.setError(error, 'ユーザー情報検索時エラー：　なにかがおかしいです。')
+        })
+    },
+    fetchMyAvatar () {
+      this.$http.secured.get(`/api/v1/show_my_avatar`)
+        .then(response => {
+          this.avatar = response.data
+          console.log(typeof this.avatar)
         })
         .catch(error => {
           this.setError(error, 'ユーザー情報検索時エラー：　なにかがおかしいです。')
