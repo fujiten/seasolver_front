@@ -11,6 +11,7 @@ import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VTooltip from 'v-tooltip'
 import VModal from 'vue-js-modal'
+import VueLazyload from 'vue-lazyload'
 
 library.add(faTrashAlt, faEdit)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
@@ -20,6 +21,12 @@ Vue.config.productionTip = false
 Vue.use(Vuex)
 Vue.use(VTooltip)
 Vue.use(VModal, { dialog: true })
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  error: 'dist/loading.jpg',
+  loading: 'dist/loading.jpg',
+  attempt: 1
+})
 
 Vue.use(VueAxios, {
   secured: securedAxiosInstance,

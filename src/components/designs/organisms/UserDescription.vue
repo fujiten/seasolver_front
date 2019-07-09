@@ -2,7 +2,7 @@
   <div class="m-4">
 
     <div class="flex items-center">
-      <img class="w-24 h-24 rounded-full mr-4" :src="avatar" alt="Avatar">
+      <img class="w-24 h-24 rounded-full mr-4" v-lazy="avatar" alt="Avatar">
       <div>
         <h2 class="text-lg font-bold">{{ name }}</h2>
         <p class="mt-2">Lv. {{ level }}</p>
