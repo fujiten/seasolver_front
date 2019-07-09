@@ -23,8 +23,8 @@ Vue.use(VTooltip)
 Vue.use(VModal, { dialog: true })
 Vue.use(VueLazyload, {
   preLoad: 1.3,
-  error: 'dist/loading.jpg',
-  loading: 'dist/loading.jpg',
+  error: 'static/loading.jpg',
+  loading: 'static/loading.jpg',
   attempt: 1
 })
 
