@@ -7,13 +7,13 @@ import VueAxios from 'vue-axios'
 import { securedAxiosInstance, plainAxiosInstance } from './backend/axios'
 import './main.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faTrashAlt, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faTrashAlt, faEdit, faSignOutAlt, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VTooltip from 'v-tooltip'
 import VModal from 'vue-js-modal'
 import VueLazyload from 'vue-lazyload'
 
-library.add(faTrashAlt, faEdit)
+library.add(faTrashAlt, faEdit, faSignOutAlt, faInfoCircle)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
@@ -23,8 +23,8 @@ Vue.use(VTooltip)
 Vue.use(VModal, { dialog: true })
 Vue.use(VueLazyload, {
   preLoad: 1.3,
-  error: 'static/loading.jpg',
-  loading: 'static/loading.jpg',
+  // error: './static/loading.gif',
+  loading: './static/loading.gif',
   attempt: 1
 })
 
