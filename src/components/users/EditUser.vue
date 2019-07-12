@@ -7,7 +7,7 @@
       <div class="m-4">
         <div class="flex items-center">
           <label>
-            <img class="w-24 h-24 rounded-full mr-4 bg-hover" :src="avatar" alt="Avatar">
+            <img class="w-24 h-24 rounded-full mr-4 bg-hover" v-lazy="avatar" alt="Avatar">
             <UserImageUploader
               v-bind="user"
               :params="{ limit: 1000, unit: 'kb', allow: 'jpg,png' }"
@@ -68,7 +68,7 @@ export default {
       this.$http.secured.get(`/api/v1/users/${this.$route.params.id}`)
         .then(response => {
           this.user = response.data.user
-          this.avatar = response.data.encoded_image
+          this.avatar = response.data.avatar
         })
         .catch(error => {
           this.setError(error, 'ユーザー検索時エラー：　なにかがおかしいです。')

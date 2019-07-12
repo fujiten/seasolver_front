@@ -29,7 +29,6 @@ export default {
   },
   data () {
     return {
-      uploadImage: {},
       message: '',
       error: ''
     }

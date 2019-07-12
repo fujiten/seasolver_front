@@ -1,21 +1,22 @@
 <template>
   <div class="max-w-md m-auto py-10">
     <div class="text-red" v-if="error">{{ error }}</div>
-    <div>
-      <p>ユーザー名：{{ user.name }}</p>
-      <p>ユーザーレベル：{{ user.level }}</p>
-      <p>作った問題一覧：準備中...</p>
-    </div>
+    <hr class="border border-grey" />
+    <UserDescription v-bind="user" v-bind:avatar="avatar" />
+    <hr class="border border-grey" />
   </div>
 
 </template>
 
 <script>
+import UserDescription from '@/components/designs/organisms/UserDescription.vue'
 export default {
   name: 'User',
+  components: { UserDescription },
   data () {
     return {
       user: {},
+      avatar: '',
       error: ''
     }
   },
@@ -23,7 +24,8 @@ export default {
     const id = this.$route.params.id
     this.$http.secured.get(`/api/v1/users/${id}`)
       .then(response => {
-        this.user = response.data
+        this.user = response.data.user
+        this.avatar = response.data.avatar
       })
       .catch(error => this.setError(error, 'ユーザー検索時エラー：　なにかがおかしいです。'))
   },
