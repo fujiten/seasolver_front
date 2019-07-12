@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div v-show="!loading" class="max-w-md m-auto py-10 border-4 border-white">
+    <div v-if="!loading" class="max-w-md m-auto py-10 border-4 border-white">
       Loading...
     </div>
-    <div v-show="loading" class="max-w-md m-auto py-10 border-4 border-white">
+    <div v-if="loading" class="max-w-md m-auto py-10 border-4 border-white">
       <div class="text-red" v-if="error">{{ error }}</div>
       <div>{{ $route.params.message }}</div>
       <div>{{ message }}</div>
 
-      <my-quiz v-if="isMine" />
-      <others-quiz v-if="isOthers" />
+      <!-- <my-quiz v-if="isMine" /> -->
+      <OthersQuiz v-bind:quiz="quiz" />
 
       <div class="mb-5" v-if="beSolved">
         <p>答え： {{ quiz.answer }}</p>
@@ -145,13 +145,12 @@ export default {
       this.$http.secured.get(`/api/v1/quizzes/${quizId}`)
         .then(response => {
           this.quiz = response.data.quiz
-          this.author = response.data.author
           this.quiz_status = response.data.quiz_status
           this.done_queries = response.data.done_queries
           this.isMine = response.data.isMine
           this.isOthers = response.data.isOthers
           this.$store.dispatch('setQuiz', this.quiz)
-          this.$store.dispatch('setAuthor', this.author)
+          this.$store.dispatch('setAuthor', this.quiz.author)
           this.loading = true
         })
         .catch(error => this.setError(error, '問題検索時エラー： なにかがおかしいです。'))
