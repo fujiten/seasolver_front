@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     signin () {
-      this.$http.plain.post('/signin', {email: this.email, password: this.password})
+      this.$http.secured.post('/signin', {email: this.email, password: this.password})
         .then(response => this.signinSuccesful(response))
         .catch(error => this.signinFailed(error))
     },
@@ -58,9 +58,9 @@ export default {
       this.$store.dispatch('switchLogin')
 
       localStorage.csrf = response.data.csrf
-      localStorage.access = response.data.access
-      localStorage.myAvatar = response.data.my_avatar
-      this.$store.dispatch('setMyAvatar', response.data.my_avatar)
+      // localStorage.access = response.data.access
+      // localStorage.myAvatar = response.data.my_avatar
+      // this.$store.dispatch('setMyAvatar', response.data.my_avatar)
 
       this.$router.replace('/')
     },
