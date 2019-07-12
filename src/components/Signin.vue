@@ -58,9 +58,8 @@ export default {
       this.$store.dispatch('switchLogin')
 
       localStorage.csrf = response.data.csrf
-      // localStorage.access = response.data.access
-      // localStorage.myAvatar = response.data.my_avatar
-      // this.$store.dispatch('setMyAvatar', response.data.my_avatar)
+      localStorage.myAvatar = response.data.my_avatar
+      this.$store.dispatch('setMyAvatar', response.data.my_avatar)
 
       this.$router.replace('/')
     },
