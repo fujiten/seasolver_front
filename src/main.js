@@ -7,13 +7,13 @@ import VueAxios from 'vue-axios'
 import { securedAxiosInstance, plainAxiosInstance } from './backend/axios'
 import './main.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faTrashAlt, faEdit, faSignOutAlt, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { faTrashAlt, faEdit, faSignOutAlt, faInfoCircle, faJedi, faLightbulb, faComment, faStickyNote, faLock, faUnlockAlt, faEye, faFistRaised } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VTooltip from 'v-tooltip'
 import VModal from 'vue-js-modal'
 import VueLazyload from 'vue-lazyload'
 
-library.add(faTrashAlt, faEdit, faSignOutAlt, faInfoCircle)
+library.add(faTrashAlt, faEdit, faSignOutAlt, faInfoCircle, faJedi, faLightbulb, faComment, faStickyNote, faLock, faUnlockAlt, faEye, faFistRaised)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
