@@ -99,13 +99,15 @@ export default {
       localStorage.myAvatar = response.data.my_avatar
       this.$store.dispatch('setMyAvatar', response.data.my_avatar)
 
+      localStorage.uid = response.data.uid
+      this.$store.dispatch('setUid', response.data.my_avatar)
+
       this.$router.replace('/')
     },
     signupFailed (error) {
       this.error = (error.response && error.response.data && error.response.data.error) || ['登録に失敗しました。']
       delete localStorage.csrf
       delete localStorage.signedIn
-      delete localStorage.access
     },
     checkSignedIn () {
       if (localStorage.signedIn) {

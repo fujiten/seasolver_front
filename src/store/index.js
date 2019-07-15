@@ -8,15 +8,13 @@ const store = new Vuex.Store({
   state: {
     signedIn: localStorage.signedIn,
     myAvatar: localStorage.myAvatar,
-    quiz: '',
-    author: ''
+    uid: localStorage.uid
   },
 
   getters: {
     signedIn (state) { return state.signedIn },
     myAvatar (state) { return state.myAvatar },
-    quiz (state) { return state.quiz },
-    author (state) { return state.author }
+    uid (state) { return state.uid }
   },
 
   mutations: {
@@ -26,11 +24,8 @@ const store = new Vuex.Store({
     setMyAvatar (state, payload) {
       state.myAvatar = payload
     },
-    setQuiz (state, payload) {
-      state.quiz = payload
-    },
-    setAuthor (state, payload) {
-      state.author = payload
+    setUid (state, payload) {
+      state.uid = payload
     }
   },
 
@@ -41,14 +36,10 @@ const store = new Vuex.Store({
     setMyAvatar ({commit}, payload) {
       commit('setMyAvatar', payload)
     },
-    setQuiz ({commit}, payload) {
-      commit('setQuiz', payload)
-    },
-    setAuthor ({commit}, payload) {
-      commit('setAuthor', payload)
+    setUid ({commit}, payload) {
+      commit('setUid', payload)
     }
   }
-
 })
 
 export default store
