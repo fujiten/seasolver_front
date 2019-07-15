@@ -42,12 +42,16 @@ securedAxiosInstance.interceptors.response.use(
           retryConfig.headers['X-CSRF-TOKEN'] = localStorage.csrf
           return plainAxiosInstance.request(retryConfig)
         }).catch(error => {
-          console.log('failed refresh')
-          delete localStorage.csrf
-          delete localStorage.signedIn
+          if (error.response && error.response.config && error.response.status === 401) {
+            console.log('failed refresh')
+            delete localStorage.csrf
+            delete localStorage.signedIn
 
-          location.replace('/signin')
-          return Promise.reject(error)
+            location.replace('/signin')
+            return Promise.reject(error)
+          } else {
+            return Promise.reject(error)
+          }
         })
     } else {
       return Promise.reject(error)
