@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="max-w-md m-auto py-10 border-4 border-white">
     <div>
       <div>{{ message }}</div>
       <div class="text-red" v-if="error">{{ error }}</div>
@@ -248,8 +248,8 @@ export default {
       message: '',
       queryMessage: '',
       choiceMessage: '',
-      quiz: this.$store.getters.quiz,
-      author: this.$store.getters.author,
+      quiz: {},
+      author: {},
       open: true
     }
   },
@@ -307,10 +307,28 @@ export default {
     }
   },
   created () {
-    this.fetchQueries(this.quiz.id)
-    this.fetchChoices(this.quiz.id)
+    this.checkSignedIn()
+    this.fetchQuiz()
   },
   methods: {
+    checkSignedIn () {
+      if (!localStorage.signedIn) {
+        this.$router.replace('/')
+      }
+    },
+    fetchQuiz () {
+      const quizId = this.$route.params.id
+      this.$http.secured.get(`/api/v1/quizzes/${quizId}`)
+        .then(response => {
+          this.quiz = response.data.quiz
+          if (parseInt(this.quiz.author.id) !== parseInt(this.$store.getters.uid)) {
+            this.$router.go(-1)
+          }
+          this.fetchQueries(this.quiz.id)
+          this.fetchChoices(this.quiz.id)
+        })
+        .catch(error => this.setError(error, '問題検索時エラー： なにかがおかしいです。'))
+    },
     showDeleteDialog (id, doneHandler) {
       this.$modal.show('dialog', {
         title: '確認',

@@ -11,6 +11,7 @@ import Quizzes from '@/components/quizzes/Quizzes.vue'
 import Quiz from '@/components/quizzes/Quiz.vue'
 import CreateQuiz from '@/components/quizzes/CreateQuiz'
 import EditQuiz from '@/components/quizzes/EditQuiz'
+import MyQuiz from '@/components/quizzes/MyQuiz'
 import EditQuery from '@/components/quizzes/EditQuery'
 import NotFound from '@/components/NotFound.vue'
 
@@ -72,6 +73,11 @@ export default new Router({
           path: '/quizzes/:id/edit',
           name: 'EditQuiz',
           component: EditQuiz
+        },
+        {
+          path: '/quizzes/:id/myquiz',
+          name: 'MyQuiz',
+          component: MyQuiz
         },
         {
           path: '/queries/:id/edit',
