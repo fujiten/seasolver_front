@@ -14,14 +14,14 @@
       </div>
 
       <hr class="border border-grey my-6" />
-      <div class="example">
-        <div class="tabs">
+      <div>
+        <div>
           <TabItem
-            v-for="item in tabContentsList"
-            v-bind="item" :key="item.id"
+            v-for="content in tabContentsList"
+            v-bind="content" :key="content.id"
             v-model="currentId"/>
         </div>
-        <div class="contents y-full">
+        <div class="border-t border-black y-full">
           <section v-for="content in tabContentsList" :key="content.id">
             <TabContent
               v-if="currentId === content.id"
@@ -47,9 +47,6 @@ export default {
       error: '',
       user: {},
       avatar: '',
-      openDrafted: false,
-      openPublished: false,
-      openTrying: false,
       openDropdown: false,
       currentId: 1,
       dropdownList: [
@@ -100,21 +97,6 @@ export default {
         this.$router.replace('/')
       }
     },
-    toggleMyDraftedQuestions () {
-      this.openDrafted = !this.openDrafted
-      this.openPublished = false
-      this.openTrying = false
-    },
-    toggleMyPublishedQuestions () {
-      this.openPublished = !this.openPublished
-      this.openDrafted = false
-      this.openTrying = false
-    },
-    toggleMyTryingQuestions () {
-      this.openTrying = !this.openTrying
-      this.openDrafted = false
-      this.openPublished = false
-    },
     dropdown () {
       this.openDropdown = !this.openDropdown
     },
@@ -142,12 +124,6 @@ export default {
 .list-enter, .list-leave-to {
   transform: translateX(0vw) translateX(0px);
   opacity: 0;
-}
-
-.contents {
-  position: relative;
-  overflow: hidden;
-  border-top: 1px solid #000;
 }
 
 .item {

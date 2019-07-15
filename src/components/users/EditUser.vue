@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-md m-auto py-10">
     <div class="text-red m-6" v-if="error">{{ error }}</div>
-    <h1 class="text-lg font-bold text-center">プロフィール編集</h1>
+    <h1 class="mb-3 text-lg font-bold text-center">プロフィール編集</h1>
     <hr class="border border-grey" />
     <form @submit.prevent="patchUser()">
       <div class="m-4">
@@ -38,7 +38,9 @@
         </div>
       </div>
       <hr class="border border-grey my-6" />
-      <input type="submit" value="編集する" class="m-6 width-font-sans font-bold px-4 rounded cursor-pointer no-underline bg-green hover:bg-green-dark block py-3 text-white items-center justify-center" />
+      <div class="flex justify-end">
+        <input type="submit" value="編集する" class="font-bold mr-4 px-4 py-3 rounded cursor-pointer bg-green hover:bg-green-dark block text-white" />
+      </div>
     </form>
   </div>
 </template>

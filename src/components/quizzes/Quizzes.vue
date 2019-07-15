@@ -74,7 +74,7 @@ export default {
       this.error = (error.response && error.response.data && error.response.data.error) || text
     },
     jumpToQuiz (id) {
-      this.$router.push(`quizzes/${id}`)
+      this.$router.push(`/quizzes/${id}`)
     },
     countDay (value) {
       const createdTime = value.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/)
