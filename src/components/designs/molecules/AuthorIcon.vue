@@ -1,5 +1,5 @@
 <template>
-  <div @click="jumpToAuthor" class="flex items-center justify-start">
+  <div @click.stop="jumpToAuthor" class="flex items-center justify-start">
     <img class="w-8 h-8 rounded-full mr-4" :src="avatar">
     <div class="text-xs">
       <p class="text-black leading-none">{{ author.name }}</p>
