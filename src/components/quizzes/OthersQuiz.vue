@@ -1,10 +1,14 @@
 <template>
   <div class="container">
     <img class="img w-full px-1" src="https://v0.tailwindcss.com/img/card-left.jpg">
-    <div class="px-2">
-      <h1 class="mt-16 text-3xl font-bold">{{ quiz.title }}</h1>
+    <div class>
+      <div class="mt-16 flex items-center">
+        <h1 class="inline text-3xl font-bold">{{ quiz.title }}</h1>
+        <button v-if="isMyQuiz" @click="jumpTo(`/quizzes/${quiz.id}/myquiz`)" class="text-white ml-3 py-1 px-3 bg-grey-darker hover:bg-indigo-darker">編集</button>
+      </div>
       <AuthorIcon v-bind="quiz" v-bind:filterMethod="toDate" class="mt-2" />
       <p class="mt-4 text-lg">{{ quiz.question }}</p>
+      <p class="mt-4">(難易度目安: {{ quiz.difficulity }})</p>
     </div>
   </div>
 </template>
@@ -17,12 +21,17 @@ export default {
   props: {
     quiz: Object
   },
+  computed: {
+    isMyQuiz () {
+      return parseInt(this.quiz.author.id) === parseInt(this.$store.getters.uid)
+    }
+  },
   methods: {
     setError (error, text) {
       this.error = (error.response && error.response.data && error.response.data.error) || text
     },
-    jumpToAuthor (userId) {
-      this.$router.push(`/users/${userId}`)
+    jumpTo (path) {
+      this.$router.push(path)
     },
     toDate (value) {
       const createdTime = value.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/)
@@ -37,7 +46,7 @@ export default {
 <style scoped>
 
 .container {
-  min-height: 700px;
+  min-height: 500px;
 }
 
 @media (min-width: 576px) {

@@ -1,140 +1,95 @@
 <template>
   <div>
-    <div v-if="!loading" class="max-w-md m-auto py-10 border-4 border-white">
+    <div v-if="!loading" class="max-w-md m-auto py-10">
       Loading...
     </div>
-    <div v-if="loading" class="max-w-md m-auto py-10 border-4 border-white">
+
+    <div v-if="loading" class="max-w-md m-auto py-10">
       <div class="text-red" v-if="error">{{ error }}</div>
       <div>{{ $route.params.message }}</div>
       <div>{{ message }}</div>
 
-      <!-- <my-quiz v-if="isMine" /> -->
       <OthersQuiz v-bind:quiz="quiz" />
 
       <div class="mb-5" v-if="beSolved">
+        <p>問題： {{ quiz.question }}</p>
         <p>答え： {{ quiz.answer }}</p>
         <p>(すでに正解済みの問題です。)</p>
       </div>
 
       <div v-if="!beSolved">
-        <div v-if="!tryingQuiz && isOthers">
-          <a href="#" @click.prevent="solveQuiz(quiz.id)" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">挑戦する</a>
+
+        <div v-if="!isTryingQuiz && !isMyQuiz">
+          <a href="#" @click.prevent="solveQuiz(quiz.id)" class="inline-block mt-6 mb-3 bg-transparent text-sm hover:bg-indigo hover:text-white text-indigo border border-indigo no-underline font-bold py-2 px-4 mr-2 rounded">
+            <font-awesome-icon icon="jedi" size="lg" class="mr-2" />問題に挑戦する
+          </a>
         </div>
 
-        <div v-if="tryingQuiz">
-          <p>問題に挑戦中です。</p>
-          <p>
-          現在の質問数：{{ done_queries.length }} , 現在のポイント： {{ currentPoint }} , 誤答した回数: {{ quiz_status.failed_answer_times }}
-          </p>
+        <hr class="border border-grey" />
 
-          <ul class="list-reset mt-4">
-            <p>完了した質問一覧</p>
-            <li class="py-4" v-for="(done_query, index) in done_queries" :key="done_query.id">
-              <p>{{ index + 1 }} : {{ done_query.body }}</p>
-              <p>{{ index + 1 }} : {{ done_query.answer }}  (獲得ポイント: {{ done_query.point }}, 要開示ポイント: {{ done_query.revealed_point }})</p>
-            </li>
-          </ul>
+        <transition name="fade">
+          <TryingQuiz v-if="isTryingQuiz"
+            v-bind:quizId="quiz.id"
+            v-bind:quiz_status="quiz_status"
+            v-bind:done_queries="done_queries"
+            @getSolved="getSolved"/>
+        </transition>
 
-          <ul class="list-reset mt-4">
-            <p>残っている質問一覧</p>
-            <li v-for="(query, index) in remainedQueries" :key="query.id">
-              <div v-if="isMoreCurrentPointThanRevealedPoint(query)">
-                <p>{{ index + 1 }} : {{ query.body }}</p>
-                <button  @click.prevent="doQuery(query)" class="inlien-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">質問する</button>
-              </div>
-            </li>
-          </ul>
-
-          <a href="#" @click.prevent="toggleAnswer()" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">回答する</a>
-          <div v-if="confirmedOpen">
-            <p>複数の選択肢の中から正解を選んで下さい。誤った場合は、最終スコアの質問数が＋５されます。</p>
-            <p>＜注意＞回答に挑戦するボタンを押したあとは、回答を終えるまで新たに質問することは出来ません！</p>
-            <a href="#" @click.prevent="answerQuestion()" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">回答に挑戦する</a>
-          </div>
-
-          <ul v-if="answerOpen" class="mt-4">
-            <p>選択肢一覧</p>
-            <li v-for="choice in choices" :key="choice.id">
-              <p>
-              選択肢の本文:{{ choice.body }}
-              <button href="#" @click.prevent="selectChoice(choice.id, choice.correctness)" class="inline-block mt-3 mb-3 bg-transparent text-sm hover:bg-blue hover:text-white text-blue border border-blue no-underline font-bold py-2 px-4 mr-2 rounded">これを選ぶ</button>
-              </p>
-            </li>
-          </ul>
-
-        </div>
+      </div>
+      <div class="text-red mt-10">
+        （デバッグ用情報）
+        <div>自分が作者か？{{ isMyQuiz }}</div>
+        <div>ログインしているか？{{ isSignedIn }}</div>
+        <div>クイズに挑戦中か？{{ isTryingQuiz }}</div>
+        <div>公開済みか？ {{ isPublished }}</div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
-import MyQuiz from './MyQuiz.vue'
-import OthersQuiz from './OthersQuiz.vue'
+import MyQuiz from '@/components/quizzes/MyQuiz.vue'
+import OthersQuiz from '@/components/quizzes/OthersQuiz.vue'
+import TryingQuiz from '@/components/quizzes/TryingQuiz.vue'
 export default {
   name: 'Quiz',
+  components: {
+    MyQuiz,
+    OthersQuiz,
+    TryingQuiz
+  },
   data () {
     return {
       quiz: {},
-      queries: [],
       quiz_status: {},
       done_queries: [],
-      choices: [],
       author: {},
       error: '',
-      isMine: false,
-      isOthers: false,
       message: '',
-      confirmedOpen: false,
-      answerOpen: false,
+      isTryingQuiz: false,
       loading: false
     }
   },
   computed: {
+    isMyQuiz () {
+      return parseInt(this.quiz.author.id) === parseInt(this.$store.getters.uid)
+    },
+    isSignedIn () {
+      return this.$store.getters.signedIn === 'true' || this.$store.getters.signedIn === true
+    },
+    isPublished () {
+      return this.quiz.published === 'published'
+    },
     beSolved () {
-      if (this.quiz_status !== undefined && this.quiz_status !== null && this.quiz_status.be_solved) {
+      if (this.quiz_status && this.quiz_status.be_solved) {
         return true
       } else {
         return false
       }
-    },
-    tryingQuiz () {
-      if (this.quiz_status) {
-        this.fetchQuery()
-        return true
-      } else {
-        return false
-      }
-    },
-    currentPoint () {
-      let sum = 0
-      if (this.done_queries) {
-        this.done_queries.forEach(query => {
-          sum += query.point
-        })
-      }
-      return sum
-    },
-    remainedQueries () {
-      const doneQueriesIds = this.done_queries.map(q => q.id)
-      const remaindQueries = this.queries.filter(query => {
-        return !doneQueriesIds.includes(query.id)
-      })
-      return remaindQueries
     }
-  },
-  components: {
-    MyQuiz,
-    OthersQuiz
   },
   created () {
     this.fetchQuiz()
-  },
-  beforeDestroy () {
-    this.$store.dispatch('setQuiz', '')
-    this.$store.dispatch('setAuthor', '')
-    this.updateQuizStatus()
   },
   methods: {
     setError (error, text) {
@@ -145,15 +100,29 @@ export default {
       this.$http.secured.get(`/api/v1/quizzes/${quizId}`)
         .then(response => {
           this.quiz = response.data.quiz
-          this.quiz_status = response.data.quiz_status
-          this.done_queries = response.data.done_queries
-          this.isMine = response.data.isMine
-          this.isOthers = response.data.isOthers
-          this.$store.dispatch('setQuiz', this.quiz)
-          this.$store.dispatch('setAuthor', this.quiz.author)
-          this.loading = true
+
+          if (!this.isMyQuiz && this.isSignedIn) {
+            this.fetchQuizStatus()
+          } else if (!this.isMyQuiz && !this.quiz.published) {
+            this.$router.go(-1)
+          } else {
+            this.loading = true
+          }
         })
         .catch(error => this.setError(error, '問題検索時エラー： なにかがおかしいです。'))
+    },
+    fetchQuizStatus () {
+      const quizId = this.$route.params.id
+      this.$http.secured.get(`/api/v1/quizzes/${quizId}/show_quiz_status`)
+        .then(response => {
+          this.quiz_status = response.data.quiz_status
+          this.loading = true
+          if (this.quiz_status) {
+            this.done_queries = response.data.done_queries
+            this.isTryingQuiz = true
+          }
+        })
+        .catch(error => this.setError(error, '問題ステータス検索時エラー： なにかがおかしいです。'))
     },
     solveQuiz (quizId) {
       if (!localStorage.signedIn) {
@@ -164,20 +133,9 @@ export default {
           this.queries = response.data.queries
           this.quiz_status = response.data.quiz_status
           this.done_queries = []
-          this.message = '問題に挑戦！'
+          this.isTryingQuiz = true
         })
         .catch(error => this.setError(error, 'エラー： 問題に挑戦できません。'))
-    },
-    updateQuizStatus () {
-      if (this.isOthers && this.tryingQuiz) {
-        this.$http.secured.patch(`/api/v1/quizzes/${this.quiz.id}/update_quiz_status`,
-          { quiz_status: { total_points: this.currentPoint,
-            query_times: this.done_queries.length} })
-          .then(response => {
-            this.quiz_status = response.data
-          })
-          .catch(error => this.setError(error, 'エラー： クイズ状況の更新に失敗しました。'))
-      }
     },
     fetchQuery () {
       this.$http.secured.get(`/api/v1/quizzes/${this.$route.params.id}/queries`)
@@ -197,56 +155,20 @@ export default {
         })
         .catch(error => this.setError(error, 'エラー： 質問に失敗しました'))
     },
-    toggleAnswer () {
-      this.confirmedOpen = !this.confirmedOpen
-      this.fetchChoices(this.quiz.id)
-    },
-    fetchChoices (quizId) {
-      this.$http.secured.get(`/api/v1/quizzes/${quizId}/choices`)
-        .then(response => {
-          this.choices = response.data
-        })
-        .catch(error => {
-          this.setError(error, '選択肢検索時エラー：　なにかがおかしいです。')
-        })
-    },
-    answerQuestion () {
-      this.answerOpen = !this.answerOpen
-    },
-    updateQuizStatustoSolved () {
-      this.$http.secured.patch(`/api/v1/quizzes/${this.quiz.id}/update_quiz_status`,
-        { quiz_status: { be_solved: true } })
-        .then(response => {
-          this.quiz_status = response.data
-        })
-        .catch(error => this.setError(error, 'エラー： クイズ状況の更新に失敗しました。'))
-    },
-    incrementQuizStatusFailedAnswer () {
-      this.$http.secured.patch(`/api/v1/quizzes/${this.quiz.id}/update_quiz_status`,
-        { quiz_status: { be_solved: false }, increment: true })
-        .then(response => {
-          this.quiz_status = response.data
-        })
-        .catch(error => this.setError(error, 'エラー： クイズ状況の更新に失敗しました。'))
-    },
-    selectChoice (choiceId, correctness) {
-      if (correctness) {
-        this.updateQuizStatustoSolved()
-        this.message = 'おめでとう！ 正解だよ'
-      } else {
-        this.incrementQuizStatusFailedAnswer()
-        this.message = 'やってしまいましたね。間違いです。'
-        this.confirmedOpen = false
-        this.answerOpen = false
-      }
-    },
-    isMoreCurrentPointThanRevealedPoint (RemaindQuery) {
-      if (this.currentPoint >= RemaindQuery.revealed_point) {
-        return true
-      } else {
-        return false
-      }
+    getSolved () {
+      this.quiz_status.be_solved = true
     }
   }
 }
 </script>
+
+<style scoped>
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+</style>
