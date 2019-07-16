@@ -7,7 +7,7 @@
         <button v-if="isMyQuiz" @click="jumpTo(`/quizzes/${quiz.id}/myquiz`)" class="text-white ml-3 py-1 px-3 bg-grey-darker hover:bg-indigo-darker">編集</button>
       </div>
       <AuthorIcon v-bind="quiz" v-bind:filterMethod="toDate" class="mt-2" />
-      <p class="mt-4 text-lg">{{ quiz.question }}</p>
+      <p class="mt-4 text-lg leading-normal">{{ quiz.question }}</p>
       <p class="mt-4">(難易度目安: {{ quiz.difficulity }})</p>
     </div>
   </div>

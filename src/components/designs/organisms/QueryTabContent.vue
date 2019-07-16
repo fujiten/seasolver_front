@@ -21,7 +21,7 @@
             </div>
           </div>
             <p class="mt-3">
-              <span class="font-bold">Q. </span>{{ query.body }} というわけでした？
+              <span class="font-bold">Q. </span>{{ query.body }}
             </p>
 
           <p v-if="isDone" class="my-5">

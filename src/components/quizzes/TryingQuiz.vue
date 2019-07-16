@@ -11,7 +11,6 @@
     <p class=mt-1>
       誤答した回数： {{ quizStatus.failed_answer_times }}
     </p>
-
     <SelectChoice
       v-bind:choices="choices"
       @closeExceptMe="closeExceptChoices"
@@ -19,7 +18,7 @@
       @selectWrongChoice="incrementQuizStatusFailedAnswer"/>
 
     <hr class="border border-grey m-0" />
-
+    <transition name="fade">
     <div v-show="!lastChoiceOpen">
       <div class="mt-3">
         <TabItem
@@ -27,6 +26,7 @@
           v-bind="content" :key="content.id"
           v-model="currentId"/>
       </div>
+
       <div class="border-t border-black y-full">
         <section v-for="content in tabContentsList" :key="content.id">
           <QueryTabContent
@@ -37,7 +37,9 @@
             v-bind:currentPoint="currentPoint"/>
         </section>
       </div>
+
     </div>
+    </transition>
   </div>
 </template>
 
@@ -168,5 +170,13 @@ export default {
 </script>
 
 <style scoped>
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 2s, transform 2s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
 
 </style>

@@ -22,7 +22,8 @@
           <p class="inline-block font-bold text-lg">Q.{{ query.body }}</p>
           <p class="mt-2 font-bold text-lg"> A.{{ query.answer }}</p>
           <p class="mt-2">カテゴリ:{{ query.category | categoryToJapanese  }}</p>
-          <p> (獲得ポイント：{{ query.point }}) (開示ポイント：{{ query.revealed_point }})</p>
+          <p class="mt-2"><font-awesome-icon v-tooltip="'獲得ポイント'" icon="fist-raised" size="lg" class="mr-2" />{{ query.point }} pt
+              <font-awesome-icon v-tooltip="'出現ポイント'" icon="eye" size="lg" class="ml-3 mr-2" />{{ query.revealed_point }} pt</p>
           <div class="flex justify-end">
             <button v-tooltip="'編集'" @click.prevent="jumpToQuery(query.id)" class="m-2"><font-awesome-icon icon="edit" /></button>
             <button v-tooltip="'削除'" @click.prevent="showDeleteDialog(query.id, deleteQuery)" class="m-2"><font-awesome-icon icon="trash-alt" /></button>

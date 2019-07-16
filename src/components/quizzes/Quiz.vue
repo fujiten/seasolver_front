@@ -9,8 +9,9 @@
       <div>{{ $route.params.message }}</div>
       <div>{{ message }}</div>
 
-      <OthersQuiz v-bind:quiz="quiz" />
+      <OthersQuiz v-bind:quiz="quiz" id="scrollPoint" />
 
+      <transition name="fade">
       <div class="mb-5" v-if="beSolved">
         <p>問題： {{ quiz.question }}</p>
         <p>答え： {{ quiz.answer }}</p>
@@ -36,13 +37,7 @@
         </transition>
 
       </div>
-      <div class="text-red mt-10">
-        （デバッグ用情報）
-        <div>自分が作者か？{{ isMyQuiz }}</div>
-        <div>ログインしているか？{{ isSignedIn }}</div>
-        <div>クイズに挑戦中か？{{ isTryingQuiz }}</div>
-        <div>公開済みか？ {{ isPublished }}</div>
-      </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -157,6 +152,11 @@ export default {
     },
     getSolved () {
       this.quiz_status.be_solved = true
+      this.scrollView('scrollPoint')
+    },
+    scrollView (point) {
+      const element = document.getElementById(point)
+      element.scrollIntoView({behavior: 'smooth', block: 'start'})
     }
   }
 }
