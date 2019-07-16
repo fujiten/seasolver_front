@@ -77,25 +77,26 @@ export default {
     signOut () {
       this.$http.secured.delete('/signin')
         .then(response => {
-          delete localStorage.csrf
-          delete localStorage.signedIn
-          delete localStorage.access
-          delete localStorage.myAvatar
+          this.deleteLocalStorageInfo()
           this.$store.dispatch('switchLogin')
           this.$router.replace('/')
         })
         .catch(error => {
           this.setError(error, '認証切れの可能性があります。トークンを削除してログアウトします。')
-          delete localStorage.csrf
-          delete localStorage.signedIn
-          delete localStorage.access
-          delete localStorage.myAvatar
+          this.deleteLocalStorageInfo()
           this.$store.dispatch('switchLogin')
           this.$router.replace('/')
         })
     },
     jumpTo (path) {
       this.$router.push(path)
+    },
+    deleteLocalStorageInfo () {
+      delete localStorage.csrf
+      delete localStorage.signedIn
+      delete localStorage.access
+      delete localStorage.myAvatar
+      delete localStorage.uid
     }
   }
 }
