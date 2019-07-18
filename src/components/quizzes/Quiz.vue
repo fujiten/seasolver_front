@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-3">
     <div v-if="!loading" class="max-w-md m-auto py-10">
       Loading...
     </div>

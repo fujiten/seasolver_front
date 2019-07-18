@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-md m-auto py-10 border-4 border-white">
+  <div class="max-w-md m-auto py-10 px-3 border-4 border-white">
     <h3 class="font-mono text-3xl mb-10 text-center">問題と解説のセットを仮作成</h3>
     <p class="text-center">まずは「問題」と「解説」のセットを作ろう。</p>
     <p class="text-center">作った問題に「質問」を追加していくのは、それからだ！</p>
