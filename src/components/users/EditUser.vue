@@ -7,8 +7,8 @@
       <div class="m-4">
         <div class="flex items-center">
           <label>
-            <img class="w-24 h-24 rounded-full mr-4 bg-hover" v-lazy="avatar" alt="Avatar">
-            <UserImageUploader
+            <img class="w-24 h-24 rounded-full mr-4 bg-hover" v-lazy="avatar">
+            <ImageUploader
               v-bind="user"
               :params="{ limit: 1000, unit: 'kb', allow: 'jpg,png' }"
               v-model="avatar"
@@ -46,10 +46,10 @@
 </template>
 
 <script>
-import UserImageUploader from '@/components/designs/organisms/UserImageUploader.vue'
+import ImageUploader from '@/components/designs/organisms/ImageUploader.vue'
 export default {
   name: 'EditUser',
-  components: { UserImageUploader },
+  components: { ImageUploader },
   data () {
     return {
       user: {},
@@ -85,6 +85,8 @@ export default {
           { image: this.avatar }
         })
         .then(response => {
+          localStorage.myAvatar = response.data.avatar
+          this.$store.dispatch('setMyAvatar', response.data.avatar)
           this.$router.push({name: 'Mypage', params: { message: 'プロフィールを編集しました!' }})
         })
         .catch(error => this.setError(error, 'プロフィールの編集に失敗しました。'))

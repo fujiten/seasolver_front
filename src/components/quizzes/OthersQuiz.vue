@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <img class="img w-full px-1" src="https://v0.tailwindcss.com/img/card-left.jpg">
+    <img class="mt-2 img w-full object-cover px-1" v-lazy="quiz.image">
     <div class>
       <div class="mt-16 flex items-center">
         <h1 class="inline text-3xl font-bold">{{ quiz.title }}</h1>
@@ -52,12 +52,14 @@ export default {
 @media (min-width: 576px) {
   .img {
   height: 18rem;
+  object-fit: cover;
   }
 }
 
 @media (max-width: 576px) {
   .img {
   height: 14rem;
+  object-fit: cover;
   }
 }
 

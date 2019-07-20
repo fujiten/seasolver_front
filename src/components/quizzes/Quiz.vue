@@ -12,10 +12,9 @@
       <OthersQuiz v-bind:quiz="quiz" id="scrollPoint" />
 
       <transition name="fade">
-      <div class="mb-5" v-if="beSolved">
-        <p>問題： {{ quiz.question }}</p>
-        <p>答え： {{ quiz.answer }}</p>
-        <p>(すでに正解済みの問題です。)</p>
+      <div class="my-5" v-if="beSolved">
+        <p class="text-lg font-bold leading-normal">解説： {{ quiz.answer }}</p>
+        <p class="mt-2">(すでに正解済みの問題です。)</p>
       </div>
 
       <div v-if="!beSolved">
