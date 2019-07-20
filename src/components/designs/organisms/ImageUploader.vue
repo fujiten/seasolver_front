@@ -4,7 +4,7 @@
       <div class="m-6">
         <input
           type="file"
-          id="avatar_name"
+          id="image_name"
           class="input_image"
           accept="image/jpeg, image/png"
           @change="onImageChange"
@@ -16,10 +16,9 @@
 <script>
 import { FileEvaluable } from '@/components/mixins/FileEvaluable'
 export default {
-  name: 'UserImageUploder',
+  name: 'ImageUploder',
   mixins: [ FileEvaluable ],
   props: {
-    id: Number,
     currentImage: String
   },
   model: {
