@@ -2,6 +2,15 @@
   <div class="max-w-md m-auto py-10 border-4 border-white">
     <h3 class="font-mono text-3xl mb-10 text-center">問題編集</h3>
 
+    <label>
+      <img class="img w-full px-1 bg-hover" v-lazy="quiz.image">
+      <ImageUploader
+        v-bind="quiz"
+        :params="{ limit: 1000, unit: 'kb', allow: 'jpg,png' }"
+        v-model="quiz.image"
+      />
+    </label>
+
     <form @submit.prevent="patchQuiz">
       <div class="mt-6 mb-6">
         <label for="quiz_title" class="label text-xl">タイトル</label><span> (20文字以内)</span>
@@ -58,8 +67,10 @@
 </template>
 
 <script>
+import ImageUploader from '@/components/designs/organisms/ImageUploader.vue'
 export default {
   name: 'EditQuiz',
+  components: { ImageUploader },
   data () {
     return {
       quiz: {},
@@ -92,7 +103,7 @@ export default {
         return
       }
       const id = this.quiz.id
-      this.$http.secured.patch(`/api/v1/quizzes/${id}`, { quiz: { title: this.quiz.title, question: this.quiz.question, answer: this.quiz.answer } })
+      this.$http.secured.patch(`/api/v1/quizzes/${id}`, { quiz: { image: this.quiz.image, title: this.quiz.title, question: this.quiz.question, answer: this.quiz.answer } })
         .then(response => {
           this.quiz = ''
           const id = response.data.id
@@ -109,6 +120,24 @@ export default {
 .quiz_container {
   white-space:pre-wrap;
   word-wrap:break-word;
+}
+
+.bg-hover:hover {
+  opacity: 0.7;
+}
+
+@media (min-width: 576px) {
+  .img {
+  height: 18rem;
+  object-fit: cover;
+  }
+}
+
+@media (max-width: 576px) {
+  .img {
+  height: 14rem;
+  object-fit: cover;
+  }
 }
 
 </style>

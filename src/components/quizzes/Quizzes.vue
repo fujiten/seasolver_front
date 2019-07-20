@@ -9,7 +9,7 @@
       <li class="p-3 hover:bg-grey-lighter" v-for="quiz in quizzes" :key="quiz.id">
         <div @click.prevent="jumpToQuiz(quiz.id)" class="max-w-md w-full lg:flex bg-transparent">
           <div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
-            <img src="https://v0.tailwindcss.com/img/card-left.jpg">
+            <img class="h-48 object-cover" v-lazy="quiz.image">
           </div>
           <div class="w-full border-r border-b border-l border-grey-light lg:border-l-0 lg:border-t lg:border-grey-light rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
             <div class="mb-4">
@@ -38,8 +38,8 @@ export default {
   filters: {
     stringSlicer (value) {
       const ReplacedValue = value.replace(/　/g, '  ')
-      if (ReplacedValue.length > 70) {
-        return value.slice(0, 70) + '…'
+      if (ReplacedValue.length > 65) {
+        return value.slice(0, 65) + '…'
       } else {
         return ReplacedValue
       }

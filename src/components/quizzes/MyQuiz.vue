@@ -3,6 +3,7 @@
     <div>
       <div>{{ message }}</div>
       <div class="text-red" v-if="error">{{ error }}</div>
+      <img class="mt-2 img w-full px-1" v-lazy="quiz.image">
       <h1 class="font-bold text-lg mb-5">{{ quiz.title }} ({{ isPublished }})</h1>
       <p>本文：「{{ quiz.question }}」</p>
       <p>解説：「{{ quiz.answer }}」</p>
@@ -534,6 +535,20 @@ export default {
 }
 .fade-enter, .fade-leave-to {
   opacity: 0
+}
+
+@media (min-width: 576px) {
+  .img {
+  height: 18rem;
+  object-fit: cover;
+  }
+}
+
+@media (max-width: 576px) {
+  .img {
+  height: 14rem;
+  object-fit: cover;
+  }
 }
 
 </style>
