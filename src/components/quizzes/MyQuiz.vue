@@ -1,10 +1,11 @@
 <template>
   <div class="max-w-md m-auto py-10 border-4 border-white">
     <div>
+      <div>{{ $route.params.message }}</div>
       <div>{{ message }}</div>
       <div class="text-red" v-if="error">{{ error }}</div>
       <img class="mt-2 img w-full px-1" v-lazy="quiz.image">
-      <h1 class="font-bold text-lg mb-5">{{ quiz.title }} ({{ isPublished }})</h1>
+      <h1 class="font-bold text-lg mt-2 mb-5">{{ quiz.title }} ({{ isPublished }})</h1>
       <p>本文：「{{ quiz.question }}」</p>
       <p>解説：「{{ quiz.answer }}」</p>
       <div class="flex justify-end">

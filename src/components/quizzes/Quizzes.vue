@@ -9,7 +9,7 @@
       <li class="p-3 hover:bg-grey-lighter" v-for="quiz in quizzes" :key="quiz.id">
         <div @click.prevent="jumpToQuiz(quiz.id)" class="max-w-md w-full lg:flex bg-transparent">
           <div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
-            <img class="h-48 object-cover" v-lazy="quiz.image">
+            <img class="h-48 img" v-lazy="quiz.image">
           </div>
           <div class="w-full border-r border-b border-l border-grey-light lg:border-l-0 lg:border-t lg:border-grey-light rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
             <div class="mb-4">
@@ -67,7 +67,7 @@ export default {
       .then(response => {
         this.quizzes = response.data
       })
-      .catch(error => this.setError(error, 'Something went wrong'))
+      .catch(error => this.setError(error, '申し訳ございません、ただいまメンテナンス中です。'))
   },
   methods: {
     setError (error, text) {
@@ -96,3 +96,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+.img {
+  object-fit: cover;
+}
+
+</style>

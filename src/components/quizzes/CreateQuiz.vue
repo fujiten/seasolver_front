@@ -87,7 +87,7 @@ export default {
         .then(response => {
           this.newQuiz = ''
           const id = response.data.id
-          return this.$router.push({name: 'Quiz', params: { id: id, message: '問題と解説のセットを仮作成しました。質問を１０個以上追加すれば、問題を公開することができます。' }})
+          this.$router.push({name: 'MyQuiz', params: { id: id, message: '問題と解説のセットを仮作成しました。質問を１０個以上追加すれば、問題を公開することができます。' }})
         })
         .catch(error => this.setError(error, ['問題の作成に失敗しました。']))
     }
