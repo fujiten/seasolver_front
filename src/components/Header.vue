@@ -105,6 +105,7 @@ export default {
         let arr = cookie.split('=')
         obj[arr[0]] = arr[1]
       })
+      console.log(obj)
       if (obj.signedIn) {
         this.$http.secured.get(`/api/v1/users/show_me`)
           .then(response => {
