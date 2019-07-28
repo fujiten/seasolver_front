@@ -69,6 +69,7 @@ export default {
     }
   },
   created () {
+    this.checkSignedInWithCookie()
   },
   methods: {
     setError (error, text) {
@@ -94,9 +95,35 @@ export default {
     deleteLocalStorageInfo () {
       delete localStorage.csrf
       delete localStorage.signedIn
-      delete localStorage.access
       delete localStorage.myAvatar
       delete localStorage.uid
+    },
+    checkSignedInWithCookie () {
+      const cookies = document.cookie.split('; ')
+      let obj = {}
+      cookies.forEach(cookie => {
+        let arr = cookie.split('=')
+        obj[arr[0]] = arr[1]
+      })
+      if (obj.signedIn) {
+        this.$http.secured.get(`/api/v1/users/show_me`)
+          .then(response => {
+            localStorage.signedIn = true
+            this.$store.dispatch('switchLogin')
+
+            localStorage.csrf = response.data.csrf
+            localStorage.myAvatar = response.data.my_avatar
+            this.$store.dispatch('setMyAvatar', response.data.my_avatar)
+
+            localStorage.uid = response.data.uid
+            this.$store.dispatch('setUid', response.data.uid)
+            this.$router.replace('/')
+            document.cookie = 'signedIn=; max-age=0'
+          })
+          .catch(error => {
+            this.setError(error, 'ユーザー情報検索時エラー：　なにかがおかしいです。')
+          })
+      }
     }
   }
 }

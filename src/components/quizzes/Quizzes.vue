@@ -43,35 +43,21 @@ export default {
       } else {
         return ReplacedValue
       }
-    },
-    countDay (value) {
-      const createdTime = value.match(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/)
-      createdTime.shift()
-      const [year, month, day, hours, minutes, seconds] = createdTime
-      const createdDate = new Date(year, month - 1, day, hours, minutes, seconds)
-      const today = new Date()
-      const differenceOfDay = Math.floor((today - createdDate) / 86400000)
-      if (differenceOfDay === 0) {
-        return '今日'
-      } else if (differenceOfDay === 1) {
-        return '昨日'
-      } else if (differenceOfDay < 10) {
-        return `${differenceOfDay}日前`
-      } else {
-        return `${month}/${day}`
-      }
     }
   },
   created () {
-    this.$http.secured.get('/api/v1/quizzes')
-      .then(response => {
-        this.quizzes = response.data
-      })
-      .catch(error => this.setError(error, '申し訳ございません、ただいまメンテナンス中です。'))
+    this.fetchQuizzes()
   },
   methods: {
     setError (error, text) {
       this.error = (error.response && error.response.data && error.response.data.error) || text
+    },
+    fetchQuizzes () {
+      this.$http.secured.get('/api/v1/quizzes')
+        .then(response => {
+          this.quizzes = response.data
+        })
+        .catch(error => this.setError(error, '申し訳ございません、ただいまメンテナンス中です。'))
     },
     jumpToQuiz (id) {
       this.$router.push(`/quizzes/${id}`)

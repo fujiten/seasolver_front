@@ -19,9 +19,16 @@
         </div>
 
         <button type="submit" class="font-sans font-bold px-4 rounded cursor-pointer
-        no-underline bg-green hover:bg-green-dark block w-full py-4 text-white items-center justify-center">ログイン</button>
+        no-underline bg-green hover:bg-green-dark block w-full py-4 text-white">ログイン</button>
 
       </form>
+      <hr class="border border-grey" />
+      <div class="flex justify-center">
+        <button @click="signinWithTwitter()" class="twitter mt-10 font-sans font-bold px-4 py-3 rounded cursor-pointer
+        no-underline block text-white">
+          Twitterアカウントでログイン
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -46,6 +53,23 @@ export default {
     signin () {
       this.$http.secured.post('/signin', {email: this.email, password: this.password})
         .then(response => this.signinSuccesful(response))
+        .catch(error => this.signinFailed(error))
+    },
+    signinWithTwitter () {
+      this.$http.secured.get('/authenticate')
+        .then(response => {
+          if (response.data.status === 'authentication_success') {
+            this.signinSuccesful(response)
+          } else if (response.data.status === 'return_callback_url') {
+            location.href = response.data.oauth_url
+          } else if (response.data.status === 'authentication_failed') {
+            document.cookie = 'token_validness=false;'
+            alert('ログインに失敗しました。')
+          } else {
+            document.cookie = 'token_validness=false;'
+            alert('ログインに失敗しました。')
+          }
+        })
         .catch(error => this.signinFailed(error))
     },
     signinSuccesful (response) {
@@ -81,3 +105,14 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+.twitter {
+  background-color: #38A1F3;
+}
+
+.twitter:hover{
+  background-color: rgb(31, 128, 203);
+}
+</style>
