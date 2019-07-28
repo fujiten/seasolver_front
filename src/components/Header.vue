@@ -107,7 +107,8 @@ export default {
       })
       console.log(obj)
       if (obj.signedIn) {
-        this.$http.secured.get(`/api/v1/users/show_me`)
+        const config = { headers: {'Authorization': `Bearer ${obj.jwt_access}`} }
+        this.$http.secured.get(`/api/v1/users/show_me`, config)
           .then(response => {
             localStorage.signedIn = true
             this.$store.dispatch('switchLogin')
