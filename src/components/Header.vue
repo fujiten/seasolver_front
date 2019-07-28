@@ -107,6 +107,7 @@ export default {
       })
       console.log(obj)
       if (obj.signedIn) {
+        console.log(obj.jwt_access)
         const config = { headers: {'Authorization': `Bearer ${obj.jwt_access}`} }
         this.$http.secured.get(`/api/v1/users/show_me`, config)
           .then(response => {
