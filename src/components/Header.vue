@@ -105,14 +105,10 @@ export default {
         let arr = cookie.split('=')
         obj[arr[0]] = arr[1]
       })
-      console.log(obj)
-      if (obj.signedIn) {
-        console.log(obj.jwt_access)
+      if (obj.jwt_access) {
         const config = { headers: {'Authorization': `Bearer ${obj.jwt_access}`} }
         this.$http.secured.get(`/api/v1/users/show_me`, config)
           .then(response => {
-            document.cookie = 'signedIn=; max-age=0'
-
             localStorage.signedIn = true
             this.$store.dispatch('switchLogin')
 
