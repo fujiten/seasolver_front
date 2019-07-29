@@ -105,9 +105,9 @@ export default {
         let arr = cookie.split('=')
         obj[arr[0]] = arr[1]
       })
-      if (obj.jwt_access) {
-        console.log(obj.jwt_access)
-        const config = { headers: {'Authorization': `Bearer ${obj.jwt_access}`} }
+      if (obj.ac_token) {
+        console.log(obj.ac_token)
+        const config = { headers: {'Authorization': `Bearer ${obj.ac_token}`} }
         this.$http.secured.get(`/api/v1/users/show_me`, config)
           .then(response => {
             localStorage.signedIn = true
