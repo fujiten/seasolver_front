@@ -105,10 +105,10 @@ export default {
         let arr = cookie.split('=')
         obj[arr[0]] = arr[1]
       })
-      if (obj.ac_token) {
-        const config = { headers: {'Authorization': `Bearer ${obj.ac_token}`} }
-        this.$http.secured.get(`/api/v1/users/show_me`, config)
+      if (obj.signedIn) {
+        this.$http.secured.get(`/api/v1/users/show_me`)
           .then(response => {
+            document.cookie = 'signedIn=; max-age=0'
             localStorage.signedIn = true
             this.$store.dispatch('switchLogin')
 
@@ -121,7 +121,8 @@ export default {
             this.$router.replace('/')
           })
           .catch(error => {
-            this.setError(error, 'ユーザー情報検索時エラー：　なにかがおかしいです。')
+            document.cookie = 'signedIn=; max-age=0'
+            this.setError(error, 'ログインエラー：　なにかがおかしいです。')
           })
       }
     }
