@@ -106,7 +106,6 @@ export default {
         obj[arr[0]] = arr[1]
       })
       if (obj.ac_token) {
-        console.log(obj.ac_token)
         const config = { headers: {'Authorization': `Bearer ${obj.ac_token}`} }
         this.$http.secured.get(`/api/v1/users/show_me`, config)
           .then(response => {
