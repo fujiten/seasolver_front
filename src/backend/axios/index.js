@@ -43,10 +43,10 @@ securedAxiosInstance.interceptors.response.use(
           return plainAxiosInstance.request(retryConfig)
         }).catch(error => {
           if (error.response && error.response.config && error.response.status === 401) {
-            console.log('failed refresh')
+            console.log('failed refresh!')
             delete localStorage.csrf
             delete localStorage.signedIn
-            document.cookie = 'signedIn=; max-age=0'
+            document.cookie = 'signedIn=false;'
             location.replace('/signin')
             return Promise.reject(error)
           } else {
