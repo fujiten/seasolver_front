@@ -63,10 +63,8 @@ export default {
           } else if (response.data.status === 'return_callback_url') {
             location.href = response.data.oauth_url
           } else if (response.data.status === 'authentication_failed') {
-            document.cookie = 'token_validness=false;'
             alert('ログインに失敗しました。')
           } else {
-            document.cookie = 'token_validness=false;'
             alert('ログインに失敗しました。')
           }
         })

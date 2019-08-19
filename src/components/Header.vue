@@ -108,7 +108,6 @@ export default {
       if (obj.signedIn) {
         this.$http.secured.get(`/api/v1/users/show_me`)
           .then(response => {
-            document.cookie = 'signedIn=; max-age=0'
             localStorage.signedIn = true
             this.$store.dispatch('switchLogin')
 
