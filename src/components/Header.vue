@@ -90,6 +90,7 @@ export default {
         })
     },
     jumpTo (path) {
+      document.cookie = 'signedIn=false;'
       this.$router.push(path)
     },
     deleteLocalStorageInfo () {

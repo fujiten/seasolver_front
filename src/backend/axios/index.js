@@ -46,7 +46,7 @@ securedAxiosInstance.interceptors.response.use(
             console.log('failed refresh!')
             delete localStorage.csrf
             delete localStorage.signedIn
-            document.cookie = 'signedIn=false;'
+            document.cookie = 'signedIn=false'
             location.replace('/signin')
             return Promise.reject(error)
           } else {
