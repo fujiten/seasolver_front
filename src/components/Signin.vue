@@ -24,9 +24,9 @@
       </form>
       <hr class="border border-grey" />
       <div class="flex justify-center">
-        <button @click="signinWithTwitter()" class="twitter mt-10 font-sans font-bold px-4 py-3 rounded cursor-pointer
+        <button class="twitter mt-10 font-sans font-bold px-4 py-3 rounded cursor-pointer
         no-underline block text-white">
-          Twitterアカウントでログイン
+          Twitterアカウントでログイン(準備中)
         </button>
       </div>
     </div>
