@@ -23,6 +23,11 @@
 
       </form>
       <hr class="border border-grey" />
+      <div class="mt-5">
+        <p class="font-bold text-center">ゲスト用ログイン</p>
+        <p class="mt-2">メールアドレス：testuser@test.com</p>
+        <p>パスワード：testuser</p>
+      </div>
       <div class="flex justify-center">
         <button class="twitter mt-10 font-sans font-bold px-4 py-3 rounded cursor-pointer
         no-underline block text-white">
